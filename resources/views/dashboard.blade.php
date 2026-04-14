@@ -20,21 +20,27 @@
 
     <ul class="box-info">
         <li>
-            <i class='bx bxs-calendar-check' ></i>
+            <i class='bx bxs-folder-open'></i>
             <span class="text">
                 <h3>{{ $total_laporan }}</h3>
                 <p>Total Laporan Saya</p>
             </span>
         </li>
+
         <li>
-            <i class='bx bxs-group' ></i>
+            <i class='bx' style="display: flex; align-items: center; justify-content: center; background-color: #FFE0D3 !important;">
+                <i class='bx bxs-cog bx-spin' style="color: #FD7238 !important; background: transparent !important; width: auto !important; height: auto !important; font-size: 36px !important; margin: 0 !important; padding: 0 !important;"></i>
+            </i>
             <span class="text">
                 <h3>{{ $laporan_diproses }}</h3>
                 <p>Sedang Diproses</p>
             </span>
         </li>
+
         <li>
-            <i class='bx bxs-dollar-circle' ></i>
+            <div style="width: 80px; height: 80px; border-radius: 50%; background-color: #D4EDDA !important; display: flex; align-items: center; justify-content: center;">
+                <i class='bx bxs-check-circle' style="font-size: 36px !important; color: #155724 !important; background: transparent !important; width: auto !important; height: auto !important; padding: 0 !important; margin: 0 !important;"></i>
+            </div>
             <span class="text">
                 <h3>{{ $laporan_selesai }}</h3>
                 <p>Laporan Selesai</p>
@@ -82,13 +88,16 @@
                             <td>{{ \Carbon\Carbon::parse($laporan->created_at)->format('d M Y') }}</td>
                             <td>
                                 @if($laporan->status == 'pending')
-                                    <span class="status pending" style="background: var(--orange); color: var(--light); padding: 5px 10px; border-radius: 20px; font-size: 12px;">Pending</span>
+                                    <span style="background-color: #f5b547; color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; min-width: 85px; text-align: center;">Pending</span>
+                                
                                 @elseif($laporan->status == 'proses' || $laporan->status == 'diproses')
-                                    <span class="status process" style="background: var(--blue); color: var(--light); padding: 5px 10px; border-radius: 20px; font-size: 12px;">Diproses</span>
+                                    <span style="background-color: #FD7238; color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; min-width: 85px; text-align: center;">Diproses</span>
+                                
                                 @elseif(strtolower($laporan->status) == 'selesai')
-                                    <span style="background-color: #10B981; color: white; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block;">Selesai</span>
+                                    <span style="background-color: #10B981; color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; min-width: 85px; text-align: center;">Selesai</span>
+                                
                                 @else
-                                    <span style="background-color: #6b7280; color: white; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block;">{{ ucfirst($laporan->status) }}</span>
+                                    <span style="background-color: #6b7280; color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; min-width: 85px; text-align: center;">{{ ucfirst($laporan->status) }}</span>
                                 @endif
                             </td>
                             <td style="white-space: nowrap; text-align: center;">

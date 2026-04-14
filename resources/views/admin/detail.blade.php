@@ -1,163 +1,249 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-2xl text-gray-800 leading-tight">
-                {{ __('Detail Laporan') }}
-            </h2>
-            <a href="{{ route('admin.index') }}" class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold py-2 px-4 rounded-lg inline-flex items-center transition shadow-sm text-sm">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                Kembali ke Daftar
-            </a>
-        </div>
-    </x-slot>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-    <div class="py-12 bg-gray-50 min-h-screen">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl border border-gray-100 p-8">
+    <style>
+        /* Sembunyikan layout utama, TAPI kecualikan elemen di dalam Picmo */
+        nav:not(.picmo__picker nav), 
+        header:not(.picmo__picker header), 
+        .navbar, .topbar, #sidebar {
+            display: none !important;
+        }
+        
+        main {
+            padding-top: 1rem !important;
+        }
+
+        /* --- FIX TAMPILAN PICMO EMOJI PICKER (MENGGUNAKAN TRIK SCALE) --- */
+
+        /* 1. Kembalikan ukuran Picmo ke normal agar isinya LEGA dan UTUH 100% */
+        .picmo__picker {
+            --picker-width: 320px !important;
+            --picker-height: 350px !important;
+            --emojis-per-row: 8 !important;   
+            width: 100% !important;
+        }
+
+        /* 2. Susutkan/Zoom-out keseluruhan container secara proporsional! */
+        #picker-container {
+            width: auto !important;
+            height: auto !important;
+            transform: scale(0.6); /* Susutkan menjadi 80% dari ukuran asli (bisa diganti 0.75 jika masih kurang kecil) */
+            transform-origin: bottom right; /* Titik pusat menyusutnya di pojok kanan bawah dekat tombol */
+        }
+
+        /* Kembalikan struktur Search dan Tab Kategori */
+        .picmo__picker header, .picmo__picker nav {
+            display: flex !important;
+        }
+
+        /* Pastikan tombol emoji rapi dan presisi */
+        .picmo__emojiButton {
+            background-color: transparent !important;
+            box-shadow: none !important;
+            border: none !important;
+            outline: none !important;
+            border-radius: 8px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 100% !important; 
+            aspect-ratio: 1 / 1 !important; 
+        }
+
+        .picmo__emojiButton:hover {
+            background-color: #f3f4f6 !important; 
+        }
+        /* -------------------------------------- */
+    </style>
+
+    <div class="py-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            
+            <div class="mb-6">
+                <a href="{{ route('admin.index') }}" class="bg-white border border-gray-200 text-gray-700 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300 font-semibold py-2.5 px-5 rounded-xl inline-flex items-center transition duration-200 shadow-sm text-sm">
+                    <i class='bx bx-arrow-back mr-2 text-xl'></i>
+                    Kembali
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
-                <div class="border-b border-gray-200 pb-6 mb-6">
-                    <h3 class="text-3xl font-bold text-gray-900 mb-4">{{ $pengaduan->judul }}</h3>
-                    <div class="flex flex-wrap items-center text-sm text-gray-600 gap-4">
-                        <span class="flex items-center bg-gray-100 px-3 py-1 rounded-full">
-                            <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                            <strong class="mr-1">Pengirim:</strong> {{ $pengaduan->user->name }}
-                        </span>
-                        <span class="flex items-center bg-gray-100 px-3 py-1 rounded-full">
-                            <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                            <strong class="mr-1">Waktu:</strong> {{ \Carbon\Carbon::parse($pengaduan->created_at)->translatedFormat('d F Y - H:i') }}
-                        </span>
-                        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider
-                            {{ $pengaduan->status == 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}
-                            {{ $pengaduan->status == 'diproses' ? 'bg-blue-100 text-blue-800' : '' }}
-                            {{ $pengaduan->status == 'selesai' ? 'bg-green-100 text-green-800' : '' }}
-                        ">
-                            Status: {{ $pengaduan->status }}
-                        </span>
-                    </div>
-                </div>
-
-                <div class="mb-8">
-                    <h4 class="text-lg font-bold text-gray-800 mb-3 border-l-4 border-indigo-500 pl-2">Deskripsi Laporan</h4>
-                    <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 text-gray-800 whitespace-pre-line leading-relaxed text-md">
-                        {{ $pengaduan->isi }}
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-indigo-50 p-6 rounded-lg border border-indigo-100">
-                    <div>
-                        <h4 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-1">Kategori Masalah</h4>
-                        <p class="text-indigo-900 font-semibold text-lg">{{ $pengaduan->kategori ?? 'Tidak ada kategori' }}</p>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-2">Bukti Lampiran</h4>
-                        @if($pengaduan->bukti)
-                            <div class="mt-2">
-                                <a href="{{ asset('storage/' . $pengaduan->bukti) }}" target="_blank" class="block">
-                                    <img src="{{ asset('storage/' . $pengaduan->bukti) }}" alt="Bukti Laporan" class="w-full max-w-sm rounded-lg shadow-sm border border-gray-200 hover:opacity-80 transition duration-200 object-cover">
-                                </a>
-                                <p class="text-xs text-gray-500 mt-2 flex items-center">
-                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
-                                    Klik gambar untuk memperbesar
-                                </p>
-                            </div>
-                        @else
-                            <p class="text-gray-500 italic flex items-center mt-2 bg-gray-50 p-3 rounded border border-gray-100 w-fit">
-                                <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                Tidak ada foto lampiran
-                            </p>
-                        @endif
-                    </div>
-                </div>
-                <div class="mt-8">
-                    @if($pengaduan->balasan)
-                        <h4 class="text-lg font-bold text-gray-800 mb-3 border-l-4 border-green-500 pl-2">Tanggapan Admin</h4>
-                        <div class="bg-green-50 p-6 rounded-lg border border-green-200 text-green-800 whitespace-pre-line leading-relaxed text-md shadow-sm">
-                            {{ $pengaduan->balasan }}
-                        </div>
-                    @else
-                        <h4 class="text-lg font-bold text-gray-800 mb-3 border-l-4 border-blue-500 pl-2">Berikan Tanggapan</h4>
-                        <form action="{{ route('admin.pengaduan.reply', $pengaduan->id) }}" method="POST" class="bg-gray-50 p-6 rounded-lg border border-gray-200 shadow-inner">
-                            @csrf
-                            @method('PUT')
-                            <div class="mb-5">
-                                <label class="block font-bold mb-2 text-slate-800">Ketik Pesan Balasan / Solusi:</label>
-                                
-                                <div style="position: relative; width: 100%;">
-                                    <textarea 
-                                        name="balasan" 
-                                        id="isi_tanggapan"
-                                        rows="5" 
-                                        required 
-                                        placeholder="Ketikkan tanggapan Anda di sini..." 
-                                        class="w-full p-4 rounded-xl border border-blue-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all resize-y text-slate-700 bg-white"
-                                    ></textarea>
-                                    
-                                    <button 
-                                        type="button" 
-                                        id="emoji-trigger" 
-                                        style="position: absolute; right: 15px; bottom: 15px; z-index: 20; background: transparent; border: none; cursor: pointer; padding: 5px;"
-                                        class="text-slate-400 hover:text-blue-600 transition-colors flex items-center justify-center"
-                                    >
-                                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                    </button>
-
-                                    <div 
-                                        id="picker-container" 
-                                        style="position: absolute; right: 0; bottom: 100%; margin-bottom: 8px; z-index: 999; max-width: 350px; width: 100%;"
-                                        class="shadow-2xl rounded-xl border border-slate-200 bg-white"
-                                    ></div>
+                <div class="lg:col-span-2 space-y-6">
+                    
+                    <div class="bg-white shadow-sm sm:rounded-2xl border border-gray-100 overflow-hidden">
+                        <div class="p-6 md:p-8">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">{{ $pengaduan->judul }}</h3>
+                            
+                            <div class="mt-6">
+                                <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 border-b pb-2">Deskripsi Laporan</h4>
+                                <div class="bg-blue-50/50 p-5 rounded-xl border border-blue-100 text-gray-700 whitespace-pre-line leading-relaxed">
+                                    {{ $pengaduan->isi }}
                                 </div>
                             </div>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <p class="text-sm text-gray-500 italic">*Mengirim tanggapan akan otomatis mengubah status menjadi "Selesai".</p>
-                                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg transition duration-150 shadow-md">
-                                    Kirim Tanggapan
-                                </button>
-                            </div>
-                        </form>
-                    @endif
-                </div>
-                {{-- ==================== KODE RATING MAHASISWA ==================== --}}
-                @if(strtolower($pengaduan->status) == 'selesai' && !is_null($pengaduan->rating))
-                    <div class="mt-8">
-                        <h4 class="text-lg font-bold text-gray-800 mb-3 border-l-4 border-yellow-400 pl-2">Penilaian dari Mahasiswa</h4>
-                        
-                        <div class="bg-yellow-50 border border-yellow-100 p-6 rounded-lg shadow-sm">
-                            <div class="flex items-center space-x-1 mb-3">
-                                <span class="text-sm font-bold text-gray-700 mr-2">Bintang:</span>
-                                @for($i = 1; $i <= 5; $i++)
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 {{ $i <= $pengaduan->rating ? 'text-yellow-400' : 'text-gray-300' }}" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                    </svg>
-                                @endfor
-                                <span class="ml-2 text-sm font-bold text-gray-700">({{ $pengaduan->rating }}/5)</span>
-                            </div>
-                            
-                            <div class="mt-2">
-                                <span class="text-sm font-bold text-gray-700 block mb-1">Ulasan:</span>
-                                @if($pengaduan->ulasan)
-                                    <p class="text-gray-800 italic bg-white p-3 rounded border border-yellow-200">"{{ $pengaduan->ulasan }}"</p>
-                                @else
-                                    <p class="text-gray-500 italic text-sm">Mahasiswa hanya memberikan bintang tanpa ulasan teks.</p>
-                                @endif
+                        </div>
+                    </div>
+
+                    <div class="bg-white shadow-sm sm:rounded-2xl border border-gray-100">
+                        <div class="p-6 md:p-8 relative"> 
+                            @if($pengaduan->balasan)
+                                <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2 border-b pb-2">
+                                    <i class='bx bxs-check-shield text-green-500 text-xl'></i> Tanggapan Admin
+                                </h4>
+                                <div class="bg-green-50 p-5 rounded-xl border border-green-200 text-green-800 whitespace-pre-line leading-relaxed shadow-sm">
+                                    {{ $pengaduan->balasan }}
+                                </div>
+                            @else
+                                <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2 border-b pb-2">
+                                    <i class='bx bx-message-square-edit text-blue-500 text-xl'></i> Berikan Tanggapan
+                                </h4>
+                                <form action="{{ route('admin.pengaduan.reply', $pengaduan->id) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    
+                                    <div class="mb-4 relative">
+                                        <textarea 
+                                            name="balasan" 
+                                            id="isi_tanggapan"
+                                            rows="5" 
+                                            required 
+                                            placeholder="Ketikkan tanggapan atau solusi Anda di sini..." 
+                                            class="w-full p-4 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all resize-y text-slate-700 bg-gray-50/50"
+                                        ></textarea>
+                                        
+                                        <button type="button" id="emoji-trigger" class="absolute right-4 bottom-4 text-gray-500 hover:text-blue-600 transition-colors bg-white rounded-full p-1 shadow-md border border-gray-200 z-10 flex items-center justify-center h-8 w-8">
+                                            <i class='bx bx-smile text-xl'></i>
+                                        </button>
+
+                                        <div id="picker-container" class="absolute right-0 bottom-[110%] z-[9999] shadow-2xl rounded-xl border border-gray-200 bg-white" style="display: none;"></div>
+                                    </div>
+
+                                    <div class="flex flex-wrap items-center justify-between gap-4 mt-4">
+                                        <p class="text-sm text-gray-500 flex items-center gap-1 italic">
+                                            <i class='bx bx-info-circle'></i> Status otomatis "Selesai"
+                                        </p>
+                                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-6 rounded-lg transition duration-200 flex items-center gap-2 shadow-sm">
+                                            <i class='bx bx-send'></i> Kirim Tanggapan
+                                        </button>
+                                    </div>
+                                </form>
+                            @endif
+                        </div>
+                    </div>
+
+                    @if(strtolower($pengaduan->status) == 'selesai' && !is_null($pengaduan->rating))
+                    <div class="bg-white shadow-sm sm:rounded-2xl border border-gray-100 overflow-hidden">
+                        <div class="p-6 md:p-8">
+                            <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2 border-b pb-2">
+                                <i class='bx bxs-star text-yellow-400 text-xl'></i> Penilaian dari Mahasiswa
+                            </h4>
+                            <div class="bg-yellow-50 border border-yellow-200 p-5 rounded-xl">
+                                <div class="flex items-center space-x-1 mb-4">
+                                    <span class="text-sm font-bold text-gray-700 mr-2">Bintang:</span>
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <i class='bx {{ $i <= $pengaduan->rating ? 'bxs-star text-yellow-400' : 'bx-star text-gray-300' }} text-2xl'></i>
+                                    @endfor
+                                    <span class="ml-2 text-sm font-bold text-gray-700">({{ $pengaduan->rating }}/5)</span>
+                                </div>
+                                <div>
+                                    <span class="text-sm font-bold text-gray-700 block mb-2">Ulasan Singkat:</span>
+                                    @if($pengaduan->ulasan)
+                                        <p class="text-gray-800 italic bg-white p-4 rounded-lg border border-yellow-100 shadow-sm">"{{ $pengaduan->ulasan }}"</p>
+                                    @else
+                                        <p class="text-gray-500 italic text-sm">Tidak ada ulasan teks yang diberikan.</p>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>
-                @endif
+                    @endif
+                </div>
+
+                <div class="space-y-6">
+                    
+                    <div class="bg-white shadow-sm sm:rounded-2xl border border-gray-100 overflow-hidden">
+                        <div class="p-6">
+                            <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 border-b pb-2">Informasi Detail</h4>
+                            
+                            <div class="space-y-5">
+                                <div>
+                                    <p class="text-xs text-gray-500 mb-1">Status Laporan</p>
+                                    <span class="px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1
+                                        {{ $pengaduan->status == 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
+                                        {{ $pengaduan->status == 'diproses' ? 'bg-orange-100 text-orange-700' : '' }}
+                                        {{ $pengaduan->status == 'selesai' ? 'bg-green-100 text-green-700' : '' }}
+                                    ">
+                                        @if($pengaduan->status == 'pending') <i class='bx bxs-time-five text-sm'></i>
+                                        @elseif($pengaduan->status == 'diproses') <i class='bx bxs-cog bx-spin text-sm'></i>
+                                        @elseif($pengaduan->status == 'selesai') <i class='bx bxs-check-circle text-sm'></i>
+                                        @endif
+                                        {{ $pengaduan->status }}
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <p class="text-xs text-gray-500 mb-1">Kategori Masalah</p>
+                                    <p class="font-semibold text-gray-800">{{ $pengaduan->kategori ?? 'Tidak ada kategori' }}</p>
+                                </div>
+
+                                <div>
+                                    <p class="text-xs text-gray-500 mb-2">Dikirim Oleh</p>
+                                    <div class="flex items-center gap-3">
+                                        @if(isset($pengaduan->user->avatar) && $pengaduan->user->avatar != '')
+                                            <img src="{{ asset('storage/' . $pengaduan->user->avatar) }}" alt="Foto" class="w-8 h-8 rounded-full object-cover border border-gray-200">
+                                        @else
+                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($pengaduan->user->name) }}&background=EBF4FF&color=3B82F6" alt="Avatar" class="w-8 h-8 rounded-full">
+                                        @endif
+                                        <p class="font-semibold text-gray-800">{{ $pengaduan->user->name }}</p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <p class="text-xs text-gray-500 mb-1">Waktu Dibuat</p>
+                                    <p class="font-semibold text-gray-800 text-sm flex items-center">
+                                        <i class='bx bx-calendar-alt mr-2 text-gray-400 text-lg'></i> 
+                                        {{ \Carbon\Carbon::parse($pengaduan->created_at)->translatedFormat('d F Y - H:i') }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white shadow-sm sm:rounded-2xl border border-gray-100 overflow-hidden">
+                        <div class="p-6">
+                            <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 border-b pb-2">Bukti Lampiran</h4>
+                            @if($pengaduan->bukti)
+                                <a href="{{ asset('storage/' . $pengaduan->bukti) }}" target="_blank" class="block group relative overflow-hidden rounded-xl border border-gray-200">
+                                    <img src="{{ asset('storage/' . $pengaduan->bukti) }}" alt="Bukti Laporan" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-300">
+                                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition duration-300 flex items-center justify-center">
+                                        <i class='bx bx-zoom-in text-white text-4xl opacity-0 group-hover:opacity-100 transition duration-300'></i>
+                                    </div>
+                                </a>    
+                                <p class="text-xs text-gray-500 mt-3 text-center flex justify-center items-center gap-1">
+                                    <i class='bx bx-pointer'></i> Klik gambar untuk memperbesar
+                                </p>
+                            @else
+                                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 text-center border-dashed">
+                                    <i class='bx bx-image-alt text-5xl text-gray-300 mb-2'></i>
+                                    <p class="text-sm text-gray-500 font-medium">Tidak ada lampiran gambar</p>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/@picmo/renderer-fontawesome@5.1.1/dist/umd/index.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/picmo@5.8.5/dist/umd/index.min.js"></script>
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Cek apakah Picmo berhasil dimuat
             if (typeof picmo === 'undefined') {
-                console.error('Library Picmo gagal dimuat. Periksa koneksi internet Anda.');
+                console.error('Library Picmo gagal dimuat.');
                 return;
             }
 
@@ -166,24 +252,25 @@
             const textarea = document.querySelector('#isi_tanggapan');
 
             if (trigger && container && textarea) {
+                container.innerHTML = '';
+                
+                // Tambahkan 'emojisPerRow' agar posisinya merapat
                 const picker = picmo.createPicker({
                     rootElement: container,
                     showSearch: true,
                     showPreview: false,
-                    width: '100%',
-                    height: '320px',
+                    emojisPerRow: 8, // Mengunci susunan 8 emoji per baris agar rapi
                 });
-
-                container.style.display = 'none';
 
                 trigger.addEventListener('click', (e) => {
                     e.stopPropagation();
+                    e.preventDefault();
                     if (container.style.display === 'none') {
                         container.style.display = 'block';
-                        trigger.classList.add('text-blue-600');
+                        trigger.classList.add('text-blue-600', 'border-blue-300', 'bg-blue-50');
                     } else {
                         container.style.display = 'none';
-                        trigger.classList.remove('text-blue-600');
+                        trigger.classList.remove('text-blue-600', 'border-blue-300', 'bg-blue-50');
                     }
                 });
 
@@ -191,18 +278,16 @@
                     const start = textarea.selectionStart;
                     const end = textarea.selectionEnd;
                     textarea.value = textarea.value.substring(0, start) + event.emoji + textarea.value.substring(end);
-                    
                     textarea.focus();
                     textarea.selectionStart = textarea.selectionEnd = start + event.emoji.length;
-                    
                     container.style.display = 'none';
-                    trigger.classList.remove('text-blue-600');
+                    trigger.classList.remove('text-blue-600', 'border-blue-300', 'bg-blue-50');
                 });
 
                 document.addEventListener('click', (e) => {
-                    if (!container.contains(e.target) && e.target !== trigger) {
+                    if (!container.contains(e.target) && e.target !== trigger && !trigger.contains(e.target)) {
                         container.style.display = 'none';
-                        trigger.classList.remove('text-blue-600');
+                        trigger.classList.remove('text-blue-600', 'border-blue-300', 'bg-blue-50');
                     }
                 });
             }

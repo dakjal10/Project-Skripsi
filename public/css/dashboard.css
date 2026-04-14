@@ -590,3 +590,269 @@ body {
 		min-width: 420px;
 	}
 }
+
+        /* ==========================================================
+           1. PENYESUAIAN DASAR & BLOBS (BACKGROUND)
+           ========================================================== */
+        html, body, #content, #content main { background: transparent !important; }
+
+        .bg-blobs {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1; pointer-events: none; overflow: hidden;
+            background: linear-gradient(135deg, #f3f6ff 0%, #fdfcff 100%);
+        }
+        .bg-blobs .blob1, .bg-blobs .blob2 {
+            position: absolute; width: 600px; height: 600px; border-radius: 50%;
+            filter: blur(150px); transition: all 0.5s ease;
+        }
+        .bg-blobs .blob1 { top: -15%; left: -10%; background: #bfdbfe; opacity: 0.6; animation: drift 15s infinite alternate ease-in-out; }
+        .bg-blobs .blob2 { bottom: -15%; right: -10%; background: #e9d5ff; opacity: 0.5; animation: drift 20s infinite alternate-reverse ease-in-out; }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.1); }
+        }
+
+        /* ==========================================================
+           2. MENGEMBALIKAN ANIMASI LOGO E-PENGADUAN
+           ========================================================== */
+        /* Menyesuaikan dengan class bawaan AdminHub (.brand > .bx dan .text) */
+        #sidebar .brand { padding-left: 12px; margin-top: 10px; }
+        #sidebar .brand .bx {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+            color: white !important;
+            border-radius: 10px !important;
+            min-width: 38px !important; height: 38px !important;
+            display: flex; justify-content: center; align-items: center;
+            margin-right: 12px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+        }
+        /* Ikon berputar saat cursor diarahkan ke logo */
+        #sidebar .brand:hover .bx { transform: rotate(15deg) scale(1.15) !important; }
+        
+        #sidebar .brand .text {
+            background: linear-gradient(to right, #1d4ed8, #4338ca);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-weight: 800; font-size: 22px;
+        }
+
+        /* ==========================================================
+           3. GLASSMORPHISM (Tembus Pandang agar Menyatu)
+           ========================================================== */
+        /* Terapkan efek blur transparan pada kotak-kotak elemen utama */
+        #sidebar, #content nav, main .box-info li, main .table-data .order {
+            background: rgba(255, 255, 255, 0.6) !important; /* Putih transparan */
+            backdrop-filter: blur(15px) !important; 
+            -webkit-backdrop-filter: blur(15px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.8) !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        #sidebar .brand { background: transparent !important; }
+        #content nav { box-shadow: 0 4px 15px rgba(0,0,0,0.02) !important; border-bottom: none !important; }
+
+        /* MENGHILANGKAN KURVA KAKU BAWAAN TEMPLATE */
+        #content nav::before, 
+        #sidebar .side-menu li.active::before, 
+        #sidebar .side-menu li.active::after { display: none !important; }
+
+		/* =========================================================
+		4. PENGATURAN MENU SIDEBAR (DOUBLE BG & NORMAL MODE) 
+		========================================================= */
+
+		/* Hapus sisa efek lengkung bawaan template AdminHub */
+		#sidebar .side-menu li::before,
+		#sidebar .side-menu li::after {
+			display: none !important;
+		}
+
+		/* 1. LAYER LUAR (Biru Transparan) - Diterapkan pada <li> */
+		#sidebar .side-menu li {
+			padding: 0 !important;
+			background: transparent !important;
+			margin: 4px 12px !important; 
+			border-radius: 48px !important; /* Membuat ujungnya bulat */
+			transition: all 0.3s ease;
+		}
+
+		#sidebar .side-menu li.active {
+			background: rgba(37, 99, 235, 0.15) !important; /* Warna layer luar */
+			padding: 4px !important; /* Jarak 4px agar layer dalam presisi di tengah */
+		}
+
+		/* 2. LAYER DALAM (Putih) - Diterapkan pada <a> */
+		#sidebar .side-menu li a {
+			border-radius: 48px !important; 
+			width: 100% !important; 
+			height: 40px !important; /* Tinggi dikunci 40px */
+			display: flex !important;
+			align-items: center !important;
+			padding: 0 16px !important;
+			background: transparent !important;
+			margin: 0 !important;
+			transition: all 0.3s ease;
+		}
+
+		#sidebar .side-menu li.active a {
+			background: rgba(255, 255, 255, 0.95) !important; 
+			color: #2563eb !important; 
+			box-shadow: 0 4px 10px rgba(37, 99, 235, 0.1) !important; 
+		}
+
+		#sidebar .side-menu li a:hover {
+			background: rgba(37, 99, 235, 0.08) !important; 
+			color: #2563eb !important; 
+		}
+		#sidebar .side-menu li a.logout:hover {
+			background: rgba(220, 38, 38, 0.1) !important; 
+			color: #dc2626 !important; 
+		}
+
+
+		/* =========================================================
+		=== B. FIX TAMPILAN SAAT SIDEBAR DIMINIMIZE / MODE HP === 
+		========================================================= */
+
+		/* 1. ANTI-BOCOR PADA LOGO (BRAND) - VERSI FINAL */
+		#sidebar.hide .brand {
+			width: 60px !important; /* Kunci lebar agar pas dengan sidebar minimize */
+			padding: 0 !important;
+			display: flex !important;
+			justify-content: center !important;
+			align-items: center !important;
+			white-space: nowrap !important; /* PAKSA teks berbaris lurus, dilarang turun ke bawah */
+			overflow: hidden !important; /* Potong semua yang keluar batas */
+			font-size: 0 !important; /* Trik ampuh melenyapkan teks tanpa tag */
+			color: transparent !important;
+		}
+
+		#sidebar.hide .brand .bx {
+			font-size: 20px !important; /* Kembalikan ukuran icon agar tetap terlihat */
+			margin: 0 !important; /* Buat posisinya persis di tengah */
+			min-width: 38px !important; 
+			display: flex !important;
+			justify-content: center !important;
+			align-items: center !important;
+		}
+
+		#sidebar.hide .brand .text,
+		#sidebar.hide .brand span {
+			display: none !important; 
+		}
+
+	/* 2. KUNCI UKURAN BULAT SEMPURNA PADA MENU AKTIF */
+	#sidebar.hide .side-menu li {
+		width: 48px !important; /* Kunci dimensi luar = 48x48 */
+		height: 48px !important;
+		margin: 8px auto !important; /* Auto agar pas di tengah sidebar */
+		padding: 4px !important;
+		display: flex !important;
+		justify-content: center !important;
+		align-items: center !important;
+	}
+
+	#sidebar.hide .side-menu li a {
+		width: 40px !important; /* Kunci dimensi dalam = 40x40 */
+		height: 40px !important;
+		padding: 0 !important;
+		justify-content: center !important; /* Icon pas di tengah */
+	}
+
+	/* 3. SEMBUNYIKAN TEKS MENU SAAT MINIMIZE */
+	#sidebar.hide .side-menu li a .text {
+		display: none !important; 
+	}
+
+        /* ==========================================================
+           5. ANIMASI HOVER PADA KARTU & TABEL
+           ========================================================== */
+        main .box-info li {
+            border-radius: 20px; position: relative; overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        main .box-info li::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+            background: #2563eb; transform: scaleY(0); transition: transform 0.3s ease;
+        }
+        /* Efek terangkat saat hover */
+        main .box-info li:hover {
+            transform: translateY(-8px) scale(1.02); 
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1) !important;
+            background: rgba(255, 255, 255, 0.9) !important;
+        }
+        main .box-info li:hover::before { transform: scaleY(1); }
+        main .box-info li:hover .bx { transform: scale(1.1) rotate(5deg); transition: all 0.3s ease; }
+
+        main .table-data .order { border-radius: 20px; padding: 24px; }
+        main .table-data .order table tbody tr { transition: all 0.3s ease; }
+        main .table-data .order table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.5) !important;
+            transform: translateX(5px); 
+        }
+
+        /* ==========================================================
+           6. DARK MODE: BENAR-BENAR MENYATU (BLENDING)
+           ========================================================== */
+        body.dark .bg-blobs { background: linear-gradient(135deg, #020617 0%, #0f172a 100%); }
+        body.dark .bg-blobs .blob1 { background: #1e3a8a; opacity: 0.5; } 
+        body.dark .bg-blobs .blob2 { background: #312e81; opacity: 0.5; } 
+        
+        /* Ini kuncinya: Warna Gelap Transparan agar Background Blobs terlihat! */
+        body.dark #sidebar, 
+        body.dark #content nav, 
+        body.dark main .box-info li, 
+        body.dark main .table-data .order {
+            background: rgba(15, 23, 42, 0.4) !important; /* Sangat tembus pandang */
+            border: 1px solid rgba(255, 255, 255, 0.05) !important;
+            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3) !important;
+        }
+
+        /* Hover di Dark Mode */
+        body.dark main .box-info li:hover { background: rgba(30, 41, 59, 0.7) !important; box-shadow: 0 15px 25px rgba(0,0,0,0.4) !important; }
+        body.dark main .table-data .order table tbody tr:hover { background: rgba(255,255,255, 0.05) !important; }
+        
+        body.dark #sidebar .side-menu li.active a {
+            background: rgba(255, 255, 255, 0.1) !important;
+            color: #60a5fa !important; box-shadow: none !important;
+        }
+
+        /* Perbaikan Teks Dark Mode */
+        body.dark .brand .text { background: linear-gradient(to right, #60a5fa, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        body.dark main .head-title .left h1, body.dark main .box-info li h3, body.dark main .table-data h3 { color: #f8fafc !important; }
+        body.dark main .box-info li .text p, body.dark main .table-data .order table tr td { color: #cbd5e1 !important; }
+        /* ==========================================================
+           7. BACKGROUND NOTIFIKASI SOLID (#box-notif)
+           ========================================================== */
+        /* Mengunci warna background notifikasi di Light Mode */
+        #box-notif {
+            background: #ffffff !important;
+            backdrop-filter: none !important; 
+            -webkit-backdrop-filter: none !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+            border: 1px solid #e2e8f0 !important;
+        }
+
+        /* Mengunci warna background notifikasi di Dark Mode */
+        body.dark #box-notif {
+            background: #1e293b !important;
+            border: 1px solid #334155 !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+        }
+        
+        /* Memperbaiki warna teks notifikasi agar terbaca di Dark Mode */
+        body.dark #box-notif div,
+        body.dark #box-notif p {
+            color: #f8fafc !important;
+        }
+        
+        /* Menyesuaikan warna garis pemisah antar notifikasi di Dark Mode */
+        body.dark #box-notif > div:first-child,
+        body.dark #box-notif a {
+            border-bottom: 1px solid #334155 !important;
+        }
+        
+        /* Efek hover di Dark Mode (Mengesampingkan inline JS Anda) */
+        body.dark #box-notif a:hover {
+            background: #334155 !important;
+        }

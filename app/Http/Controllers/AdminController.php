@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\LaporanSelesaiMail;
 use App\Mail\LaporanDiprosesMail;
 use App\Notifications\StatusLaporanNotification;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
     {
@@ -172,5 +174,44 @@ class AdminController extends Controller
         // PENTING: Sesuaikan 'admin.show' dengan nama rute detail laporan Admin milik Anda
         // Jika nama rutenya berbeda (misal: admin.pengaduan.detail), silakan diganti.
         return redirect()->route('admin.pengaduan.show', $notifikasi->data['laporan_id']);
+    }
+
+    public function bersihkanDataLama()
+    {
+        // 1. Tentukan batas waktu: 6 bulan yang lalu dari hari ini
+        $batasWaktu = Carbon::now()->subMonths(6);
+
+        // 2. Ambil data laporan yang statusnya 'selesai' dan tanggal update-nya lebih lama dari 6 bulan lalu
+        $laporanLama = Pengaduan::where('status', 'selesai')
+                              ->where('updated_at', '<', $batasWaktu)
+                              ->get();
+
+        $jumlahDihapus = 0;
+
+        // 3. Looping data yang ditemukan
+        foreach ($laporanLama as $laporan) {
+            // Cek apakah laporan tersebut memiliki file bukti lampiran
+            if ($laporan->bukti) {
+                // HAPUS FILE FISIK DARI STORAGE
+                // Catatan: Sesuaikan 'public/laporan/' dengan nama folder tempat Anda menyimpan foto saat mahasiswa upload.
+                // Jika pakai Storage::putFile, gunakan Storage::delete
+                Storage::delete('public/laporan/' . $laporan->bukti); 
+                
+                /* * JIKA Anda menyimpan gambar menggunakan move(public_path('...')), 
+                 * maka gunakan kode di bawah ini (hapus tanda // untuk mengaktifkan, dan matikan Storage::delete di atas):
+                 * * $pathFile = public_path('folder_foto/' . $laporan->bukti);
+                 * if(file_exists($pathFile)){
+                 * unlink($pathFile);
+                 * }
+                 */
+            }
+
+            // 4. Hapus data baris laporan dari database PostgreSQL
+            $laporan->delete(); 
+            $jumlahDihapus++;
+        }
+
+        // 5. Kembalikan Admin ke halaman sebelumnya dengan membawa pesan notifikasi
+        return redirect()->back()->with('success', "Berhasil membersihkan $jumlahDihapus data laporan lama beserta file buktinya dari server.");
     }
 }   

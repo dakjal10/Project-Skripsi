@@ -1,9 +1,4 @@
-@extends('layouts.main')
-
-@section('title', 'Buat Laporan - E-Pengaduan')
-
-@section('konten_utama')
-{{-- <x-app-layout> --}}
+<x-app-layout>
 <div class="max-w-2xl mx-auto mt-10 bg-white p-6 rounded-xl shadow">
 
     <h2 class="text-2xl font-bold mb-6">Kirim Pengaduan</h2>
@@ -42,5 +37,4 @@
     </form>
 
 </div>
-{{-- </x-app-layout> --}}
-@endsection
+</x-app-layout>

@@ -97,3 +97,7 @@ require __DIR__.'/auth.php';
     Route::get('/admin/notifikasi/{id}/baca', [App\Http\Controllers\AdminController::class, 'bacaNotifikasi'])->name('admin.notif.baca');
     Route::get('/notifikasi/{id}/baca', [LaporanController::class, 'bacaNotifikasi'])->name('mahasiswa.laporan.notif.baca');
     Route::get('/mahasiswa/laporan/{id}', [LaporanController::class, 'show'])->name('mahasiswa.laporan.show');//ini bagian popup
+
+    //fungsi untuk menghapus data selesai di database
+    // Route untuk membersihkan laporan lama (Archive Clean-up)
+    Route::post('/admin/laporan/bersihkan', [App\Http\Controllers\AdminController::class, 'bersihkanDataLama'])->name('admin.laporan.bersihkan');

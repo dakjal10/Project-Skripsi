@@ -3,6 +3,49 @@
 @section('title', 'Buat Laporan - E-Pengaduan')
 
 @section('konten_utama')
+{{-- Tambahan Style Khusus untuk merapikan ukuran PicMo --}}
+    <style>
+        /* 1. Kembalikan ukuran Picmo ke normal agar isinya LEGA dan UTUH 100% */
+        .picmo__picker {
+            --picker-width: 320px !important;
+            --picker-height: 350px !important;
+            --emojis-per-row: 8 !important;   
+            width: 100% !important;
+        }
+
+        /* 2. Susutkan/Zoom-out keseluruhan container secara proporsional! */
+        #picker-container {
+            width: auto !important;
+            height: auto !important;
+            transform: scale(0.6); /* Susutkan menjadi 60% dari ukuran asli */
+            transform-origin: bottom right; /* Titik pusat menyusutnya di pojok kanan bawah dekat tombol */
+        }
+
+        /* Pastikan struktur Search dan Tab Kategori aman */
+        .picmo__picker header, .picmo__picker nav {
+            display: flex !important;
+        }
+
+        /* Pastikan tombol emoji rapi dan presisi */
+        .picmo__emojiButton {
+            background-color: transparent !important;
+            box-shadow: none !important;
+            border: none !important;
+            outline: none !important;
+            border-radius: 8px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 100% !important; 
+            aspect-ratio: 1 / 1 !important; 
+        }
+
+        .picmo__emojiButton:hover {
+            background-color: #f3f4f6 !important; 
+        }
+    </style>
     <div class="head-title">
         <div class="left">
             <h1>Buat Laporan</h1>
