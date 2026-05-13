@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Mahasiswa\LaporanController;
 use App\Models\Pengaduan;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ChatController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -71,6 +72,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/laporan/publik/{id}/like', [App\Http\Controllers\Mahasiswa\LaporanController::class, 'toggleLike'])->name('laporan.like');
     // Route::post('/laporan/{id}/rating', [App\Http\Controllers\Mahasiswa\LaporanController::class, 'simpanRating'])->name('mahasiswa.laporan.rating');
     Route::post('/laporan/{id}/rating', [App\Http\Controllers\Mahasiswa\LaporanController::class, 'rating'])->name('mahasiswa.laporan.rating');
+    // Tambahkan baris ini di dalam Route::middleware('auth')->group(function () { ... });
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chat/messages/{id}', [ChatController::class, 'fetchMessages']);
+    Route::post('/chat/message', [ChatController::class, 'sendMessage']);
 });
 require __DIR__.'/auth.php';
 // 2. GRUP MAHASISWA

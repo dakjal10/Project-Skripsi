@@ -23,6 +23,7 @@
             background: #94a3b8; 
         }
     </style>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
 
@@ -39,12 +40,12 @@
             <span class="brand-text">E-Pengaduan</span>
         </a>
         <ul class="side-menu top">
-            <li class="{{ request()->is('dashboard') ? 'active' : '' }}">
+           <li class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <a href="{{ route('dashboard') }}"><i class='bx bxs-dashboard'></i><span class="text">Dashboard</span></a>
             </li>
             
             @if(Auth::user()->userRole && Auth::user()->userRole->role_name === 'admin')
-            <li class="{{ request()->is('admin/laporan') ? 'active' : '' }}">
+            <li class="{{ request()->routeIs('admin.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.index') }}"><i class='bx bxs-message-dots'></i><span class="text">Daftar Pengaduan</span></a>
             </li>
             @endif
@@ -60,6 +61,13 @@
             
             <li class="{{ request()->routeIs('laporan.publik') ? 'active' : '' }}">
                 <a href="{{ route('laporan.publik') }}"><i class='bx bxs-group'></i><span class="text">Laporan Publik</span></a>
+            </li>
+            
+            <li class="{{ request()->routeIs('chat.*') ? 'active' : '' }}">
+                <a href="{{ route('chat.index') }}">
+                    <i class='bx bxs-chat'></i>
+                    <span class="text">Live Chat</span>
+                </a>
             </li>
         </ul>
         

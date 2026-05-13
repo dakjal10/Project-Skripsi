@@ -9,7 +9,18 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
-        /* --- Animasi Kustom --- */
+        /* --- WARNA CUSTOM (ANTI-GAGAL) --- */
+        /* Kode warna ini memotong sistem Tailwind agar PASTI muncul */
+        .bg-kampus-maroon { background-color: #8B1A1A !important; }
+        .text-kampus-maroon { color: #8B1A1A !important; }
+        .border-kampus-maroon { border-color: #8B1A1A !important; }
+        .hover-bg-kampus-dark:hover { background-color: #661010 !important; }
+        .hover-text-kampus-dark:hover { color: #661010 !important; }
+        .shadow-kampus { box-shadow: 0 10px 15px -3px rgba(139, 26, 26, 0.3) !important; }
+        .bg-kampus-soft { background-color: #FDF2F2 !important; }
+        .text-kampus-soft { color: #F87171 !important; }
+
+        /* --- Animasi Kustom Tetap Dipertahankan --- */
         @keyframes blob {
             0% { transform: translate(0px, 0px) scale(1); }
             33% { transform: translate(30px, -50px) scale(1.1); }
@@ -39,17 +50,17 @@
 <body class="antialiased bg-gray-50 text-gray-900 overflow-x-hidden">
 
     <div class="fixed inset-0 z-0 pointer-events-none">
-        <div class="absolute top-0 -left-4 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob"></div>
-        <div class="absolute top-0 -right-4 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob animation-delay-2000"></div>
-        <div class="absolute -bottom-8 left-20 w-72 h-72 bg-pink-400 rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob animation-delay-4000"></div>
+        <div class="absolute top-0 -left-4 w-96 h-96 rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob" style="background-color: #fca5a5;"></div>
+        <div class="absolute top-0 -right-4 w-96 h-96 rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob animation-delay-2000" style="background-color: #fdba74;"></div>
+        <div class="absolute -bottom-8 left-20 w-96 h-96 rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob animation-delay-4000" style="background-color: #fecdd3;"></div>
     </div>
 
     <nav class="sticky top-0 z-50 glass-nav py-4 px-6 lg:px-12 flex justify-between items-center transition-all duration-300">
         <div class="flex items-center gap-2 group cursor-pointer">
-            <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-300 group-hover:rotate-12 transition-transform">
+            <div class="w-10 h-10 bg-kampus-maroon rounded-xl flex items-center justify-center text-white shadow-lg shadow-kampus group-hover:rotate-12 transition-transform">
                 <i class='bx bx-paper-plane text-2xl'></i>
             </div>
-            <span class="font-bold text-2xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-indigo-800">
+            <span class="font-bold text-2xl tracking-tight text-kampus-maroon">
                 E-Pengaduan
             </span>
         </div>
@@ -57,11 +68,11 @@
         <div class="flex items-center gap-3 lg:gap-6">
             @if (Route::has('login'))
                 @auth
-                    <a href="{{ url('/dashboard') }}" class="px-6 py-2.5 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition shadow-lg shadow-blue-200">Dashboard</a>
+                    <a href="{{ url('/dashboard') }}" class="px-6 py-2.5 bg-kampus-maroon text-white font-bold rounded-xl hover-bg-kampus-dark transition shadow-lg shadow-kampus">Dashboard</a>
                 @else
-                    <a href="{{ route('login') }}" class="px-5 py-2 text-gray-600 font-semibold hover:text-blue-600 transition">Log in</a>
+                    <a href="{{ route('login') }}" class="px-5 py-2 text-gray-600 font-semibold hover-text-kampus-dark transition">Log in</a>
                     @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="hidden md:block px-6 py-2.5 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition shadow-lg shadow-blue-200">
+                        <a href="{{ route('register') }}" class="hidden md:block px-6 py-2.5 bg-kampus-maroon text-white font-bold rounded-xl hover-bg-kampus-dark transition shadow-lg shadow-kampus">
                             Daftar Sekarang
                         </a>
                     @endif
@@ -72,23 +83,23 @@
 
     <header class="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 pt-6 pb-16 lg:pt-10 lg:pb-24 grid lg:grid-cols-2 gap-16 items-center">
         <div class="reveal" style="animation-delay: 0.2s">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-bold mb-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-kampus-soft border-kampus-maroon border text-kampus-maroon text-xs font-bold mb-6">
                 <span class="relative flex h-2 w-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-kampus-maroon opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-kampus-maroon"></span>
                 </span>
                 Sistem Pengaduan Resmi
             </div>
             <h1 class="text-5xl lg:text-7xl font-extrabold text-gray-900 leading-[1.1] mb-8">
                 Suara Anda <br> 
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Membangun</span> <br>
+                <span class="text-kampus-maroon">Membangun</span> <br>
                 Kampus Kita.
             </h1>
             <p class="text-lg text-gray-600 mb-10 leading-relaxed max-w-lg">
                 Sampaikan aspirasi, keluhan, atau laporan fasilitas kampus secara transparan dan cepat. Kami siap mendengar demi perubahan yang lebih baik.
             </p>
             <div class="flex flex-col sm:flex-row gap-4">
-                <a href="{{ route('register') }}" class="group flex items-center justify-center gap-2 px-8 py-4 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 transition-all transform hover:-translate-y-1 shadow-2xl shadow-blue-200">
+                <a href="{{ route('register') }}" class="group flex items-center justify-center gap-2 px-8 py-4 bg-kampus-maroon text-white font-bold rounded-2xl hover-bg-kampus-dark transition-all transform hover:-translate-y-1 shadow-xl shadow-kampus">
                     Mulai Melapor <i class='bx bx-right-arrow-alt text-xl group-hover:translate-x-1 transition-transform'></i>
                 </a>
                 <a href="#fitur" class="px-8 py-4 bg-white border border-gray-200 text-gray-700 font-bold rounded-2xl hover:bg-gray-50 transition-all flex items-center justify-center">
@@ -113,7 +124,7 @@
         </div>
         
         <div class="relative reveal" style="animation-delay: 0.4s">
-            <div class="absolute -z-10 inset-0 bg-gradient-to-tr from-blue-600/20 to-purple-600/20 rounded-3xl blur-3xl transform rotate-3"></div>
+            <div class="absolute -z-10 inset-0 rounded-3xl blur-3xl transform rotate-3 opacity-20" style="background: linear-gradient(to top right, #8B1A1A, #fb923c);"></div>
             
             <div class="relative group">
                 <img src="{{ asset('images/rame.jpg') }}" alt="Ilustrasi Pengaduan" 
@@ -135,12 +146,12 @@
     </header>
 
     <section id="fitur" class="max-w-7xl mx-auto px-6 lg:px-12 py-10 reveal" style="animation-delay: 0.6s">
-        <div class="bg-blue-600 rounded-[3rem] p-8 lg:p-12 text-white flex flex-col lg:flex-row items-center justify-between gap-8">
+        <div class="bg-kampus-maroon rounded-[3rem] p-8 lg:p-12 text-white flex flex-col lg:flex-row items-center justify-between gap-8 shadow-2xl shadow-kampus">
             <div>
                 <h2 class="text-3xl font-bold mb-2">Ingin tahu status laporan Anda?</h2>
-                <p class="text-blue-100">Pantau proses penanganan pengaduan secara real-time melalui dashboard.</p>
+                <p class="text-white" style="opacity: 0.8;">Pantau proses penanganan pengaduan secara real-time melalui dashboard.</p>
             </div>
-            <a href="{{ route('login') }}" class="px-8 py-4 bg-white text-blue-600 font-bold rounded-xl hover:bg-gray-100 transition-colors">
+            <a href="{{ route('login') }}" class="px-8 py-4 bg-white text-kampus-maroon font-bold rounded-xl hover:bg-gray-50 transition-colors shadow-lg">
                 Cek Status Laporan
             </a>
         </div>
@@ -148,11 +159,11 @@
 
     <footer class="text-center py-12 text-gray-400 text-sm">
         <div class="flex justify-center gap-6 mb-4 text-xl">
-            <a href="#" class="hover:text-blue-600"><i class='bx bxl-instagram'></i></a>
-            <a href="#" class="hover:text-blue-600"><i class='bx bxl-facebook-circle'></i></a>
-            <a href="#" class="hover:text-blue-600"><i class='bx bxl-twitter'></i></a>
+            <a href="#" class="hover-text-kampus-dark"><i class='bx bxl-instagram'></i></a>
+            <a href="#" class="hover-text-kampus-dark"><i class='bx bxl-facebook-circle'></i></a>
+            <a href="#" class="hover-text-kampus-dark"><i class='bx bxl-twitter'></i></a>
         </div>
-        &copy; 2026 E-Pengaduan Mahasiswa. Built with <i class='bx bxs-heart text-red-500'></i> for better campus.
+        &copy; 2026 E-Pengaduan Mahasiswa. Built with <i class='bx bxs-heart text-kampus-maroon'></i> for better campus.
     </footer>
 
 </body>
