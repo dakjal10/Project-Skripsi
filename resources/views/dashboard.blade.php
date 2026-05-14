@@ -12,7 +12,7 @@
                 <li><a class="active" href="#">Home</a></li>
             </ul>
         </div>
-        <a href="{{ route('mahasiswa.laporan.create') }}" class="btn-download" style="background: var(--blue);">
+        <a href="{{ route('mahasiswa.laporan.create') }}" class="btn-download">
             <i class='bx bx-plus' ></i>
             <span class="text">Buat Laporan Baru</span>
         </a>
@@ -56,14 +56,14 @@
                 <form action="{{ route('dashboard') }}" method="GET" style="display: flex; gap: 10px; align-items: center;">
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari judul/kategori..." style="padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; outline: none;">
                     
-                    <select name="status" style="padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; outline: none; cursor: pointer;">
+                    <select name="status" style="padding: 8px 32px 8px 12px; border: 1px solid #ccc; border-radius: 6px; outline: none; cursor: pointer; background-color: var(--light); color: var(--dark);">
                         <option value="">Semua Status</option>
                         <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
                         <option value="diproses" {{ request('status') == 'diproses' ? 'selected' : '' }}>Diproses</option>
                         <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
                     </select>
                     
-                    <button type="submit" style="background: #3b82f6; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold;">Cari</button>
+                    <button type="submit" style="background: #8B1A1A; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold;">Cari</button>
 
                     @if(request('search') || request('status'))
                         <a href="{{ route('dashboard') }}" style="background: #ef4444; color: white; text-decoration: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; font-size: 13px;">Reset</a>
@@ -101,7 +101,7 @@
                                 @endif
                             </td>
                             <td style="white-space: nowrap; text-align: center;">
-                                <a href="{{ route('mahasiswa.laporan.show', $laporan->id) }}" style="background: #3b82f6; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none; display: inline-block; white-space: nowrap;">Lihat Detail</a>
+                                <a href="{{ route('mahasiswa.laporan.show', $laporan->id) }}" style="background: #8B1A1A; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none; display: inline-block; white-space: nowrap;">Lihat Detail</a>
                             </td>
                         </tr>
                     @empty

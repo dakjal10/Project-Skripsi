@@ -93,6 +93,7 @@ require __DIR__.'/auth.php';
         Route::get('/admin/pengaduan/{id}', [AdminController::class, 'show'])->name('admin.pengaduan.show');
         Route::put('/admin/pengaduan/{id}/reply', [AdminController::class, 'reply'])->name('admin.pengaduan.reply');
         Route::get('/admin/export-pdf', [AdminController::class, 'exportPdf'])->name('admin.pengaduan.export');
+        Route::get('/admin/export-excel', [AdminController::class, 'exportExcel'])->name('admin.pengaduan.export_excel');
     });
     Route::prefix('mahasiswa/laporan')->name('mahasiswa.laporan.')->group(function () {
         Route::get('/buat', [LaporanController::class, 'create'])->name('create');

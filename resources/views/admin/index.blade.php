@@ -74,27 +74,37 @@
                         
                         <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama/judul..." style="padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; outline: none;">
                         
-                        <select name="status" style="padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; outline: none; cursor: pointer;">
+                        <select name="status" style="padding: 8px 32px 8px 12px; border: 1px solid #ccc; border-radius: 6px; outline: none; cursor: pointer; background-color: var(--light); color: var(--dark);">
                             <option value="">Semua Status</option>
                             <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
                             <option value="diproses" {{ request('status') == 'diproses' ? 'selected' : '' }}>Diproses</option>
                             <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
                         </select>
 
-                        <select name="sort" onchange="this.form.submit()" style="padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; outline: none; cursor: pointer;">
+                        <select name="sort" onchange="this.form.submit()" style="padding: 8px 32px 8px 12px; border: 1px solid #ccc; border-radius: 6px; outline: none; cursor: pointer; background-color: var(--light); color: var(--dark);">
                             <option value="terbaru" {{ request('sort') == 'terbaru' ? 'selected' : '' }}>Urutkan: Terbaru</option>
                             <option value="terbanyak" {{ request('sort') == 'terbanyak' ? 'selected' : '' }}>Urutkan: Dukungan 🔥</option>
                         </select>
                         
-                        <button type="submit" style="background: var(--blue); color: var(--light); border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold;">Cari</button>
+                        <button type="submit" style="background: var(--maroon); color: var(--light); border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold;">Cari</button>
 
                         @if(request('search') || request('status'))
                             <a href="{{ route('admin.index') }}" style="background: var(--red); color: var(--light); text-decoration: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; font-size: 13px;">Reset</a>
                         @endif
 
-                        <a href="{{ route('admin.pengaduan.export', request()->query()) }}" target="_blank" style="background: #10B981; color: white; text-decoration: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; font-size: 13px; display: flex; align-items: center; gap: 5px;">
-                            <i class='bx bxs-file-pdf'></i> Export PDF
-                        </a>
+                        <div class="export-dropdown">
+                            <button type="button" style="background: #10B981; color: white; border: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; font-size: 13px; display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                                <i class='bx bxs-cloud-download'></i> Export Data <i class='bx bx-chevron-down'></i>
+                            </button>
+                            <div class="export-dropdown-content">
+                                <a href="{{ route('admin.pengaduan.export', request()->query()) }}" target="_blank">
+                                    <i class='bx bxs-file-pdf' style="color: #ef4444;"></i> Export ke PDF
+                                </a>
+                                <a href="{{ route('admin.pengaduan.export_excel', request()->query()) }}">
+                                    <i class='bx bxs-spreadsheet' style="color: #10B981;"></i> Export ke Excel
+                                </a>
+                            </div>
+                        </div>
                     </form>
 
                     {{-- 2. Tombol Bersihkan Arsip (Hanya Icon, Seukuran tombol Cari, Di ujung kanan) --}}
@@ -127,7 +137,7 @@
                                 @if(isset($p->user->avatar) && $p->user->avatar != '')
                                     <img src="{{ asset('storage/' . $p->user->avatar) }}" alt="Foto" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1px solid #e5e7eb;">
                                 @else
-                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($p->user->name) }}&background=EBF4FF&color=3B82F6&bold=true" alt="Avatar" style="width: 36px; height: 36px; border-radius: 50%;">
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($p->user->name) }}&background=FDF2F2&color=8B1A1A&bold=true" alt="Avatar" style="width: 36px; height: 36px; border-radius: 50%;">
                                 @endif
                                 
                                 <p style="margin: 0; font-weight: 600;">{{ $p->user->name }}</p>
@@ -142,7 +152,7 @@
                         </td>
 
                         <td>
-                            <div style="display: inline-flex; align-items: center; gap: 5px; background: #EBF4FF; color: #3B82F6; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-bottom: 5px;">
+                            <div style="display: inline-flex; align-items: center; gap: 5px; background: #FDF2F2; color: #8B1A1A; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-bottom: 5px;">
                                 <i class='bx bxs-upvote'></i> {{ $p->likes_count ?? 0 }} Suara
                             </div>
                             <br>
@@ -170,7 +180,7 @@
                         </td>
 
                         <td>
-                            <a href="{{ route('admin.pengaduan.show', $p->id) }}" style="display: inline-flex; align-items: center; gap: 5px; background: #EBF4FF; color: #3B82F6; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: bold; transition: 0.3s;">
+                            <a href="{{ route('admin.pengaduan.show', $p->id) }}" style="display: inline-flex; align-items: center; gap: 5px; background: #FDF2F2; color: #8B1A1A; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: bold; transition: 0.3s;">
                                 <i class='bx bx-show'></i> Detail
                             </a>
                         </td>

@@ -130,7 +130,7 @@
                 <div style="text-align: right;">
                     <a href="{{ route('dashboard') }}" style="display: inline-block; padding: 10px 20px; border-radius: 20px; background: var(--dark-grey); color: var(--dark); text-decoration: none; font-weight: 600; margin-right: 10px;">Batal</a>
                     
-                    <button type="submit" style="background: var(--blue); color: var(--light); padding: 10px 24px; border: none; border-radius: 20px; font-weight: 600; cursor: pointer; font-family: var(--poppins);">
+                    <button type="submit" style="background: var(--maroon); color: var(--light); padding: 10px 24px; border: none; border-radius: 20px; font-weight: 600; cursor: pointer; font-family: var(--poppins);">
                         <i class='bx bx-send'></i> Kirim Laporan
                     </button>
                 </div>

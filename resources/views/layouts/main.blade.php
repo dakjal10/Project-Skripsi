@@ -24,6 +24,13 @@
         }
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    {{-- Script Pencegah Kilatan Putih (Dark Mode) --}}
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
 </head>
 <body>
 
@@ -71,7 +78,7 @@
             </li>
         </ul>
         
-        <ul class="side-menu">
+        <ul class="side-menu bottom">
             <li><a href="{{ route('profile.edit') }}"><i class='bx bxs-cog'></i><span class="text">Settings</span></a></li>
             <li>
                 <form method="POST" action="{{ route('logout') }}">
@@ -136,7 +143,7 @@
                     @if(Auth::user()->avatar)
                         <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Profile" style="object-fit: cover; width: 40px; height: 40px; border-radius: 50%;">
                     @else
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=EBF4FF&color=3B82F6&bold=true" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%;">
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=FDF2F2&color=8B1A1A&bold=true" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%;">
                     @endif
                 </a>
             </div>

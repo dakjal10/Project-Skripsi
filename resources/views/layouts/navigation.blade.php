@@ -97,7 +97,7 @@
                                 <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Profile" class="h-10 w-10 rounded-full object-cover">
                             @else
                                 {{-- Jika tidak punya foto, tampilkan inisial --}}
-                                <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=EBF4FF&color=3B82F6&bold=true" alt="Profile" class="h-10 w-10 rounded-full">
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=FDF2F2&color=8B1A1A&bold=true" alt="Profile" class="h-10 w-10 rounded-full">
                             @endif
                             
                             <div class="flex flex-col text-left mr-2">
@@ -114,7 +114,7 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')" class="hover:bg-blue-50 hover:text-blue-600 font-medium">
+                        <x-dropdown-link :href="route('profile.edit')" class="hover:bg-red-50 hover:text-red-600 font-medium">
                             {{ __('Profil Saya') }}
                         </x-dropdown-link>
 

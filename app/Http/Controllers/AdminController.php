@@ -158,6 +158,64 @@ class AdminController extends Controller
         // 3. Download file PDF-nya
         return $pdf->download('Rekap_Pengaduan_Mahasiswa.pdf');
     }
+
+    public function exportExcel(Request $request)
+    {
+        $query = Pengaduan::with('user');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('judul', 'like', '%' . $search . '%')
+                  ->orWhere('kategori', 'like', '%' . $search . '%')
+                  ->orWhereHas('user', function($userQuery) use ($search) {
+                      $userQuery->where('name', 'like', '%' . $search . '%'); 
+                  });
+            });
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $pengaduans = $query->orderBy('created_at', 'desc')->get();
+
+        $filename = "Rekap_Pengaduan_" . date('Y-m-d_H-i') . ".csv";
+        
+        $headers = [
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$filename",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        ];
+
+        $columns = ['No', 'Nama Pengirim', 'Judul Laporan', 'Kategori', 'Tanggal Lapor', 'Status'];
+
+        $callback = function() use($pengaduans, $columns) {
+            $file = fopen('php://output', 'w');
+            
+            // Tambahkan BOM untuk dukungan karakter UTF-8 di Excel
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+            
+            fputcsv($file, $columns);
+
+            foreach ($pengaduans as $index => $p) {
+                $row['No']             = $index + 1;
+                $row['Nama Pengirim']  = $p->user->name;
+                $row['Judul Laporan']  = $p->judul;
+                $row['Kategori']       = $p->kategori;
+                $row['Tanggal Lapor']  = \Carbon\Carbon::parse($p->created_at)->format('d/m/Y');
+                $row['Status']         = ucfirst($p->status);
+
+                fputcsv($file, array_values($row));
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
     // Fungsi untuk memproses klik notifikasi oleh Admin
     public function bacaNotifikasi($id)
     {

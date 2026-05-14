@@ -1,7 +1,80 @@
 <x-app-layout>
+    <script>
+        // Cek status tema saat pertama kali halaman dimuat
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+        
+        // Dengarkan perubahan pada localStorage jika user mengubah tema di tab lain (Live Sync)
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'theme') {
+                if (e.newValue === 'dark') {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            }
+        });
+    </script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <style>
+        :root {
+            --maroon: #8B1A1A;
+            --bg-light: #F9F9F9;
+            --text-main: #342E37;
+            --card-bg: #ffffff;
+        }
+
+        .dark {
+            --bg-light: #060714;
+            --text-main: #FBFBFB;
+            --card-bg: #0C0C1E;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+        }
+
+        /* CARD STYLE - SOLID IN LIGHT, SOLID IN DARK (MATCHING DASHBOARD) */
+        .custom-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .dark .custom-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* TEXT CONTRAST */
+        .text-label {
+            color: #64748b;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .dark .text-label { color: #AAAAAA; }
+
+        .text-value {
+            color: #1e293b;
+            font-weight: 700;
+        }
+        .dark .text-value { color: #FBFBFB; }
+
+        /* OVERRIDES */
+        .dark .bg-gray-100 { background-color: var(--bg-light) !important; }
+        .dark .text-gray-900, .dark .text-gray-800, .dark .text-gray-700 { color: #FBFBFB !important; }
+        .dark .text-gray-600, .dark .text-gray-500, .dark .text-gray-400 { color: #AAAAAA !important; }
+
         /* Sembunyikan layout utama, TAPI kecualikan elemen di dalam Picmo */
         nav:not(.picmo__picker nav), 
         header:not(.picmo__picker header), 
@@ -14,6 +87,16 @@
         }
 
         /* --- FIX TAMPILAN PICMO EMOJI PICKER (MENGGUNAKAN TRIK SCALE) --- */
+        .pickerContainer {
+            --background-color: #ffffff;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
+        }
+        .dark .pickerContainer {
+            --background-color: #0f172a;
+            --text-color: #f1f5f9;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
 
         /* 1. Kembalikan ukuran Picmo ke normal agar isinya LEGA dan UTUH 100% */
         .picmo__picker {
@@ -27,7 +110,7 @@
         #picker-container {
             width: auto !important;
             height: auto !important;
-            transform: scale(0.6); /* Susutkan menjadi 80% dari ukuran asli (bisa diganti 0.75 jika masih kurang kecil) */
+            transform: scale(0.6); /* Susutkan menjadi 60% dari ukuran asli */
             transform-origin: bottom right; /* Titik pusat menyusutnya di pojok kanan bawah dekat tombol */
         }
 
@@ -55,15 +138,18 @@
         .picmo__emojiButton:hover {
             background-color: #f3f4f6 !important; 
         }
+        .dark .picmo__emojiButton:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important; 
+        }
         /* -------------------------------------- */
     </style>
 
     <div class="py-4 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto">
             
-            <div class="mb-6">
-                <a href="{{ route('admin.index') }}" class="bg-white border border-gray-200 text-gray-700 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300 font-semibold py-2.5 px-5 rounded-xl inline-flex items-center transition duration-200 shadow-sm text-sm">
-                    <i class='bx bx-arrow-back mr-2 text-xl'></i>
+            <div class="mb-6 px-4 md:px-0">
+                <a href="{{ route('admin.index') }}" class="custom-card hover:!bg-red-600 hover:!text-white hover:!border-red-600 border border-gray-200 dark:border-white/10 font-semibold py-2.5 px-5 rounded-xl inline-flex items-center transition-all duration-300 shadow-sm text-sm text-value group">
+                    <i class='bx bx-arrow-back mr-2 text-xl transition-transform duration-300 group-hover:-translate-x-1'></i>
                     Kembali
                 </a>
             </div>
@@ -72,31 +158,31 @@
                 
                 <div class="lg:col-span-2 space-y-6">
                     
-                    <div class="bg-white shadow-sm sm:rounded-2xl border border-gray-100 overflow-hidden">
+                    <div class="custom-card overflow-hidden mb-6">
                         <div class="p-6 md:p-8">
-                            <h3 class="text-2xl font-bold text-gray-900 mb-4">{{ $pengaduan->judul }}</h3>
+                            <h3 class="text-3xl font-bold mb-6 text-gray-900">{{ $pengaduan->judul }}</h3>
                             
-                            <div class="mt-6">
-                                <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 border-b pb-2">Deskripsi Laporan</h4>
-                                <div class="bg-blue-50/50 p-5 rounded-xl border border-blue-100 text-gray-700 whitespace-pre-line leading-relaxed">
-                                    {{ $pengaduan->isi }}
-                                </div>
+                            <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Deskripsi Laporan</h4>
+                            <hr class="border-gray-100 mb-4">
+                            
+                            <div class="bg-red-50/50 border border-red-100 rounded-xl p-5 text-gray-800 leading-relaxed">
+                                {{ $pengaduan->isi }}
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white shadow-sm sm:rounded-2xl border border-gray-100">
+                    <div class="custom-card overflow-hidden mb-6">
                         <div class="p-6 md:p-8 relative"> 
                             @if($pengaduan->balasan)
-                                <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2 border-b pb-2">
-                                    <i class='bx bxs-check-shield text-green-500 text-xl'></i> Tanggapan Admin
+                                <h4 class="text-lg font-bold flex items-center gap-2 border-b border-gray-100 pb-4 text-gray-900 mb-4">
+                                    <i class='bx bxs-check-shield text-green-500 text-2xl'></i> Tanggapan Admin
                                 </h4>
-                                <div class="bg-green-50 p-5 rounded-xl border border-green-200 text-green-800 whitespace-pre-line leading-relaxed shadow-sm">
+                                <div class="bg-green-50/50 border border-green-200 rounded-xl p-5 text-gray-800 font-medium leading-relaxed">
                                     {{ $pengaduan->balasan }}
                                 </div>
                             @else
-                                <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2 border-b pb-2">
-                                    <i class='bx bx-message-square-edit text-blue-500 text-xl'></i> Berikan Tanggapan
+                                <h4 class="text-lg font-bold flex items-center gap-2 border-b border-gray-100 pb-4 text-gray-900 mb-4">
+                                    <i class='bx bx-message-square-edit text-red-500 text-2xl'></i> Berikan Tanggapan
                                 </h4>
                                 <form action="{{ route('admin.pengaduan.reply', $pengaduan->id) }}" method="POST">
                                     @csrf
@@ -109,21 +195,21 @@
                                             rows="5" 
                                             required 
                                             placeholder="Ketikkan tanggapan atau solusi Anda di sini..." 
-                                            class="w-full p-4 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all resize-y text-slate-700 bg-gray-50/50"
+                                            class="w-full custom-card p-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all resize-y text-value"
                                         ></textarea>
                                         
-                                        <button type="button" id="emoji-trigger" class="absolute right-4 bottom-4 text-gray-500 hover:text-blue-600 transition-colors bg-white rounded-full p-1 shadow-md border border-gray-200 z-10 flex items-center justify-center h-8 w-8">
+                                        <button type="button" id="emoji-trigger" class="absolute right-4 bottom-4 text-gray-500 hover:text-red-600 transition-colors custom-card rounded-full p-1 shadow-md border border-gray-200 z-10 flex items-center justify-center h-8 w-8">
                                             <i class='bx bx-smile text-xl'></i>
                                         </button>
 
-                                        <div id="picker-container" class="absolute right-0 bottom-[110%] z-[9999] shadow-2xl rounded-xl border border-gray-200 bg-white" style="display: none;"></div>
+                                        <div id="picker-container" class="absolute right-0 bottom-[110%] z-[9999] shadow-2xl rounded-xl border border-gray-200 custom-card" style="display: none;"></div>
                                     </div>
 
                                     <div class="flex flex-wrap items-center justify-between gap-4 mt-4">
                                         <p class="text-sm text-gray-500 flex items-center gap-1 italic">
                                             <i class='bx bx-info-circle'></i> Status otomatis "Selesai"
                                         </p>
-                                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-6 rounded-lg transition duration-200 flex items-center gap-2 shadow-sm">
+                                        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 px-6 rounded-lg transition duration-200 flex items-center gap-2 shadow-sm">
                                             <i class='bx bx-send'></i> Kirim Tanggapan
                                         </button>
                                     </div>
@@ -133,25 +219,29 @@
                     </div>
 
                     @if(strtolower($pengaduan->status) == 'selesai' && !is_null($pengaduan->rating))
-                    <div class="bg-white shadow-sm sm:rounded-2xl border border-gray-100 overflow-hidden">
+                    <div class="custom-card overflow-hidden">
                         <div class="p-6 md:p-8">
-                            <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2 border-b pb-2">
-                                <i class='bx bxs-star text-yellow-400 text-xl'></i> Penilaian dari Mahasiswa
+                            <h4 class="text-lg font-bold mb-4 flex items-center gap-2 border-b border-gray-100 pb-4 text-gray-900">
+                                <i class='bx bxs-star text-yellow-400 text-2xl'></i> Penilaian dari Mahasiswa
                             </h4>
-                            <div class="bg-yellow-50 border border-yellow-200 p-5 rounded-xl">
-                                <div class="flex items-center space-x-1 mb-4">
-                                    <span class="text-sm font-bold text-gray-700 mr-2">Bintang:</span>
-                                    @for($i = 1; $i <= 5; $i++)
-                                        <i class='bx {{ $i <= $pengaduan->rating ? 'bxs-star text-yellow-400' : 'bx-star text-gray-300' }} text-2xl'></i>
-                                    @endfor
-                                    <span class="ml-2 text-sm font-bold text-gray-700">({{ $pengaduan->rating }}/5)</span>
+                            <div class="bg-yellow-50/30 border border-yellow-300 p-5 rounded-xl">
+                                <div class="mb-3 flex items-center gap-2">
+                                    <span class="text-sm font-bold text-gray-700">Bintang:</span>
+                                    <div class="flex items-center gap-1">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            <i class='bx {{ $i <= $pengaduan->rating ? 'bxs-star text-yellow-400' : 'bx-star text-gray-300' }} text-xl drop-shadow-sm'></i>
+                                        @endfor
+                                        <span class="ml-2 font-bold text-gray-500">({{ $pengaduan->rating }}/5)</span>
+                                    </div>
                                 </div>
                                 <div>
-                                    <span class="text-sm font-bold text-gray-700 block mb-2">Ulasan Singkat:</span>
+                                    <span class="text-sm font-bold block mb-2 text-gray-700">Ulasan Singkat:</span>
                                     @if($pengaduan->ulasan)
-                                        <p class="text-gray-800 italic bg-white p-4 rounded-lg border border-yellow-100 shadow-sm">"{{ $pengaduan->ulasan }}"</p>
+                                        <div class="italic custom-card p-4 rounded-lg border border-yellow-200 shadow-sm text-value font-medium">
+                                            "{{ $pengaduan->ulasan }}"
+                                        </div>
                                     @else
-                                        <p class="text-gray-500 italic text-sm">Tidak ada ulasan teks yang diberikan.</p>
+                                        <p class="text-gray-400 italic text-sm">Tidak ada ulasan teks yang diberikan.</p>
                                     @endif
                                 </div>
                             </div>
@@ -160,10 +250,10 @@
                     @endif
                 </div>
 
-                <div class="space-y-6">
+                <div class="lg:col-span-1 space-y-6">
                     
-                    <div class="bg-white shadow-sm sm:rounded-2xl border border-gray-100 overflow-hidden">
-                        <div class="p-6">
+                    <div class="custom-card overflow-hidden mb-6">
+                        <div class="p-6 md:p-8">
                             <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 border-b pb-2">Informasi Detail</h4>
                             
                             <div class="space-y-5">
@@ -193,7 +283,7 @@
                                         @if(isset($pengaduan->user->avatar) && $pengaduan->user->avatar != '')
                                             <img src="{{ asset('storage/' . $pengaduan->user->avatar) }}" alt="Foto" class="w-8 h-8 rounded-full object-cover border border-gray-200">
                                         @else
-                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($pengaduan->user->name) }}&background=EBF4FF&color=3B82F6" alt="Avatar" class="w-8 h-8 rounded-full">
+                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($pengaduan->user->name) }}&background=FDF2F2&color=8B1A1A" alt="Avatar" class="w-8 h-8 rounded-full">
                                         @endif
                                         <p class="font-semibold text-gray-800">{{ $pengaduan->user->name }}</p>
                                     </div>
@@ -210,8 +300,8 @@
                         </div>
                     </div>
 
-                    <div class="bg-white shadow-sm sm:rounded-2xl border border-gray-100 overflow-hidden">
-                        <div class="p-6">
+                    <div class="custom-card overflow-hidden mb-6">
+                        <div class="p-6 md:p-8">
                             <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 border-b pb-2">Bukti Lampiran</h4>
                             @if($pengaduan->bukti)
                                 <a href="{{ asset('storage/' . $pengaduan->bukti) }}" target="_blank" class="block group relative overflow-hidden rounded-xl border border-gray-200">
@@ -267,10 +357,10 @@
                     e.preventDefault();
                     if (container.style.display === 'none') {
                         container.style.display = 'block';
-                        trigger.classList.add('text-blue-600', 'border-blue-300', 'bg-blue-50');
+                        trigger.classList.add('text-red-600', 'border-red-300', 'bg-red-50');
                     } else {
                         container.style.display = 'none';
-                        trigger.classList.remove('text-blue-600', 'border-blue-300', 'bg-blue-50');
+                        trigger.classList.remove('text-red-600', 'border-red-300', 'bg-red-50');
                     }
                 });
 
@@ -281,13 +371,13 @@
                     textarea.focus();
                     textarea.selectionStart = textarea.selectionEnd = start + event.emoji.length;
                     container.style.display = 'none';
-                    trigger.classList.remove('text-blue-600', 'border-blue-300', 'bg-blue-50');
+                    trigger.classList.remove('text-red-600', 'border-red-300', 'bg-red-50');
                 });
 
                 document.addEventListener('click', (e) => {
                     if (!container.contains(e.target) && e.target !== trigger && !trigger.contains(e.target)) {
                         container.style.display = 'none';
-                        trigger.classList.remove('text-blue-600', 'border-blue-300', 'bg-blue-50');
+                        trigger.classList.remove('text-red-600', 'border-red-300', 'bg-red-50');
                     }
                 });
             }

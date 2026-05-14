@@ -27,7 +27,7 @@
                         
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                             <span style="font-weight: 600; font-size: 14px; color: #333; display: flex; align-items: center; gap: 5px;">
-                                <i class='bx bxs-user-circle' style="font-size: 20px; color: var(--blue);"></i> 
+                                <i class='bx bxs-user-circle' style="font-size: 20px; color: var(--maroon);"></i> 
                                 
                                 {{-- FASE 1: LOGIKA SENSOR NAMA (ANONIM) --}}
                                 @php
@@ -48,7 +48,7 @@
                             @if($laporan->status == 'pending')
                                 <span style="background: var(--orange); color: var(--light); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold;">Pending</span>
                             @elseif($laporan->status == 'proses' || $laporan->status == 'diproses')
-                                <span style="background: var(--blue); color: var(--light); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold;">Diproses</span>
+                                <span style="background: var(--maroon); color: var(--light); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold;">Diproses</span>
                             @else
                                 <span style="background: #10B981; color: white; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold;">Selesai</span>
                             @endif
@@ -68,7 +68,7 @@
                                     // Cek apakah user yang login sudah memberikan like pada laporan ini
                                     $isLiked = $laporan->likes->contains(Auth::user()->id);
                                 @endphp
-                                <button type="submit" style="background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 5px; color: {{ $isLiked ? 'var(--blue)' : '#6b7280' }}; font-weight: 600; font-size: 13px; transition: 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                                <button type="submit" style="background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 5px; color: {{ $isLiked ? 'var(--maroon)' : '#6b7280' }}; font-weight: 600; font-size: 13px; transition: 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
                                     <i class='bx {{ $isLiked ? 'bxs-upvote' : 'bx-upvote' }}' style="font-size: 18px;"></i>
                                     Dukung ({{ $laporan->likes->count() }})
                                 </button>

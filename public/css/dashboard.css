@@ -19,8 +19,8 @@ li {
 	--lato: 'Lato', sans-serif;
 
 	--light: #F9F9F9;
-	--blue: #3C91E6;
-	--light-blue: #CFE8FF;
+	--maroon: #8B1A1A;
+	--light-maroon: #FDF2F2;
 	--grey: #eee;
 	--dark-grey: #AAAAAA;
 	--dark: #342E37;
@@ -35,10 +35,14 @@ html {
 	overflow-x: hidden;
 }
 
-body.dark {
+.dark body, .dark body {
 	--light: #0C0C1E;
 	--grey: #060714;
 	--dark: #FBFBFB;
+}
+
+.dark body {
+	background: var(--grey);
 }
 
 body {
@@ -63,8 +67,10 @@ body {
 	transition: .3s ease;
 	overflow-x: hidden;
 	scrollbar-width: none;
+	display: flex;
+	flex-direction: column;
 }
-#sidebar::--webkit-scrollbar {
+#sidebar::-webkit-scrollbar {
 	display: none;
 }
 #sidebar.hide {
@@ -76,7 +82,7 @@ body {
 	height: 56px;
 	display: flex;
 	align-items: center;
-	color: var(--blue);
+	color: var(--maroon);
 	position: sticky;
 	top: 0;
 	left: 0;
@@ -93,6 +99,10 @@ body {
 #sidebar .side-menu {
 	width: 100%;
 	margin-top: 48px;
+}
+#sidebar .side-menu.bottom {
+	margin-top: auto;
+	margin-bottom: 20px;
 }
 #sidebar .side-menu li {
 	height: 48px;
@@ -140,7 +150,7 @@ body {
 	overflow-x: hidden;
 }
 #sidebar .side-menu.top li.active a {
-	color: var(--blue);
+	color: var(--maroon);
 }
 #sidebar.hide .side-menu li a {
 	width: calc(48px - (4px * 2));
@@ -150,7 +160,7 @@ body {
 	color: var(--red);
 }
 #sidebar .side-menu.top li a:hover {
-	color: var(--blue);
+	color: var(--maroon);
 }
 #sidebar .side-menu li a .bx {
 	min-width: calc(60px  - ((4px + 6px) * 2));
@@ -214,7 +224,7 @@ body {
 	transition: .3s ease;
 }
 #content nav .nav-link:hover {
-	color: var(--blue);
+	color: var(--maroon);
 }
 #content nav form {
 	max-width: 400px;
@@ -243,7 +253,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background: var(--blue);
+	background: var(--maroon);
 	color: var(--light);
 	font-size: 18px;
 	border: none;
@@ -293,7 +303,7 @@ body {
 	left: 2px;
 	bottom: 2px;
 	width: calc(25px - 4px);
-	background: var(--blue);
+	background: var(--maroon);
 	border-radius: 50%;
 	transition: all .3s ease;
 }
@@ -340,20 +350,38 @@ body {
 	pointer-events: none;
 }
 #content main .head-title .left .breadcrumb li a.active {
-	color: var(--blue);
+	color: var(--maroon);
 	pointer-events: unset;
 }
 #content main .head-title .btn-download {
-	height: 36px;
-	padding: 0 16px;
+	height: 42px; /* Sedikit lebih tinggi agar lebih premium */
+	padding: 0 24px;
 	border-radius: 36px;
-	background: var(--blue);
+	background: linear-gradient(135deg, #8B1A1A, #B22222);
 	color: var(--light);
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	grid-gap: 10px;
-	font-weight: 500;
+	font-weight: 600;
+	transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	box-shadow: 0 4px 15px rgba(139, 26, 26, 0.3);
+}
+
+#content main .head-title .btn-download:hover {
+	transform: translateY(-3px) scale(1.05);
+	box-shadow: 0 8px 25px rgba(139, 26, 26, 0.4);
+	background: linear-gradient(135deg, #B22222, #8B1A1A);
+	color: white;
+}
+
+#content main .head-title .btn-download .bx {
+	font-size: 20px;
+	transition: transform 0.4s ease;
+}
+
+#content main .head-title .btn-download:hover .bx {
+	transform: rotate(90deg);
 }
 
 
@@ -383,8 +411,8 @@ body {
 	align-items: center;
 }
 #content main .box-info li:nth-child(1) .bx {
-	background: var(--light-blue);
-	color: var(--blue);
+	background: var(--light-maroon);
+	color: var(--maroon);
 }
 #content main .box-info li:nth-child(2) .bx {
 	background: var(--light-yellow);
@@ -476,7 +504,7 @@ body {
 	font-weight: 700;
 }
 #content main .table-data .order table tr td .status.completed {
-	background: var(--blue);
+	background: var(--maroon);
 }
 #content main .table-data .order table tr td .status.process {
 	background: var(--yellow);
@@ -507,7 +535,7 @@ body {
 	cursor: pointer;
 }
 #content main .table-data .todo .todo-list li.completed {
-	border-left: 10px solid var(--blue);
+	border-left: 10px solid var(--maroon);
 }
 #content main .table-data .todo .todo-list li.not-completed {
 	border-left: 10px solid var(--orange);
@@ -599,14 +627,14 @@ body {
         .bg-blobs {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -1; pointer-events: none; overflow: hidden;
-            background: linear-gradient(135deg, #f3f6ff 0%, #fdfcff 100%);
+            background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
         }
         .bg-blobs .blob1, .bg-blobs .blob2 {
             position: absolute; width: 600px; height: 600px; border-radius: 50%;
             filter: blur(150px); transition: all 0.5s ease;
         }
-        .bg-blobs .blob1 { top: -15%; left: -10%; background: #bfdbfe; opacity: 0.6; animation: drift 15s infinite alternate ease-in-out; }
-        .bg-blobs .blob2 { bottom: -15%; right: -10%; background: #e9d5ff; opacity: 0.5; animation: drift 20s infinite alternate-reverse ease-in-out; }
+        .bg-blobs .blob1 { top: -15%; left: -10%; background: #fca5a5; opacity: 0.6; animation: drift 15s infinite alternate ease-in-out; }
+        .bg-blobs .blob2 { bottom: -15%; right: -10%; background: #fecdd3; opacity: 0.5; animation: drift 20s infinite alternate-reverse ease-in-out; }
 
         @keyframes drift {
             0% { transform: translate(0, 0) scale(1); }
@@ -619,20 +647,20 @@ body {
         /* Menyesuaikan dengan class bawaan AdminHub (.brand > .bx dan .text) */
         #sidebar .brand { padding-left: 12px; margin-top: 10px; }
         #sidebar .brand .bx {
-            background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+            background: linear-gradient(135deg, #8B1A1A, #B22222) !important;
             color: white !important;
             border-radius: 10px !important;
             min-width: 38px !important; height: 38px !important;
             display: flex; justify-content: center; align-items: center;
             margin-right: 12px;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 4px 12px rgba(139, 26, 26, 0.3);
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
         }
         /* Ikon berputar saat cursor diarahkan ke logo */
         #sidebar .brand:hover .bx { transform: rotate(15deg) scale(1.15) !important; }
         
         #sidebar .brand .text {
-            background: linear-gradient(to right, #1d4ed8, #4338ca);
+            background: linear-gradient(to right, #8B1A1A, #661010);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             font-weight: 800; font-size: 22px;
         }
@@ -677,7 +705,7 @@ body {
 		}
 
 		#sidebar .side-menu li.active {
-			background: rgba(37, 99, 235, 0.15) !important; /* Warna layer luar */
+			background: rgba(139, 26, 26, 0.15) !important; /* Warna layer luar */
 			padding: 4px !important; /* Jarak 4px agar layer dalam presisi di tengah */
 		}
 
@@ -696,13 +724,13 @@ body {
 
 		#sidebar .side-menu li.active a {
 			background: rgba(255, 255, 255, 0.95) !important; 
-			color: #2563eb !important; 
-			box-shadow: 0 4px 10px rgba(37, 99, 235, 0.1) !important; 
+			color: #8B1A1A !important; 
+			box-shadow: 0 4px 10px rgba(139, 26, 26, 0.1) !important; 
 		}
 
 		#sidebar .side-menu li a:hover {
-			background: rgba(37, 99, 235, 0.08) !important; 
-			color: #2563eb !important; 
+			background: rgba(139, 26, 26, 0.08) !important; 
+			color: #8B1A1A !important; 
 		}
 		#sidebar .side-menu li a.logout:hover {
 			background: rgba(220, 38, 38, 0.1) !important; 
@@ -773,7 +801,7 @@ body {
         }
         main .box-info li::before {
             content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
-            background: #2563eb; transform: scaleY(0); transition: transform 0.3s ease;
+            background: #8B1A1A; transform: scaleY(0); transition: transform 0.3s ease;
         }
         /* Efek terangkat saat hover */
         main .box-info li:hover {
@@ -794,33 +822,33 @@ body {
         /* ==========================================================
            6. DARK MODE: BENAR-BENAR MENYATU (BLENDING)
            ========================================================== */
-        body.dark .bg-blobs { background: linear-gradient(135deg, #020617 0%, #0f172a 100%); }
-        body.dark .bg-blobs .blob1 { background: #1e3a8a; opacity: 0.5; } 
-        body.dark .bg-blobs .blob2 { background: #312e81; opacity: 0.5; } 
+        .dark body .bg-blobs { background: linear-gradient(135deg, #020617 0%, #0f172a 100%); }
+        .dark body .bg-blobs .blob1 { background: #1e3a8a; opacity: 0.5; } 
+        .dark body .bg-blobs .blob2 { background: #312e81; opacity: 0.5; } 
         
         /* Ini kuncinya: Warna Gelap Transparan agar Background Blobs terlihat! */
-        body.dark #sidebar, 
-        body.dark #content nav, 
-        body.dark main .box-info li, 
-        body.dark main .table-data .order {
+        .dark body #sidebar, 
+        .dark body #content nav, 
+        .dark body main .box-info li, 
+        .dark body main .table-data .order {
             background: rgba(15, 23, 42, 0.4) !important; /* Sangat tembus pandang */
             border: 1px solid rgba(255, 255, 255, 0.05) !important;
             box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3) !important;
         }
 
         /* Hover di Dark Mode */
-        body.dark main .box-info li:hover { background: rgba(30, 41, 59, 0.7) !important; box-shadow: 0 15px 25px rgba(0,0,0,0.4) !important; }
-        body.dark main .table-data .order table tbody tr:hover { background: rgba(255,255,255, 0.05) !important; }
+        .dark body main .box-info li:hover { background: rgba(30, 41, 59, 0.7) !important; box-shadow: 0 15px 25px rgba(0,0,0,0.4) !important; }
+        .dark body main .table-data .order table tbody tr:hover { background: rgba(255,255,255, 0.05) !important; }
         
-        body.dark #sidebar .side-menu li.active a {
+        .dark body #sidebar .side-menu li.active a {
             background: rgba(255, 255, 255, 0.1) !important;
-            color: #60a5fa !important; box-shadow: none !important;
+            color: #f87171 !important; box-shadow: none !important;
         }
 
         /* Perbaikan Teks Dark Mode */
-        body.dark .brand .text { background: linear-gradient(to right, #60a5fa, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        body.dark main .head-title .left h1, body.dark main .box-info li h3, body.dark main .table-data h3 { color: #f8fafc !important; }
-        body.dark main .box-info li .text p, body.dark main .table-data .order table tr td { color: #cbd5e1 !important; }
+        .dark body .brand .text { background: linear-gradient(to right, #f87171, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .dark body main .head-title .left h1, .dark body main .box-info li h3, .dark body main .table-data h3 { color: #f8fafc !important; }
+        .dark body main .box-info li .text p, .dark body main .table-data .order table tr td { color: #cbd5e1 !important; }
         /* ==========================================================
            7. BACKGROUND NOTIFIKASI SOLID (#box-notif)
            ========================================================== */
@@ -834,25 +862,160 @@ body {
         }
 
         /* Mengunci warna background notifikasi di Dark Mode */
-        body.dark #box-notif {
+        .dark body #box-notif {
             background: #1e293b !important;
             border: 1px solid #334155 !important;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
         }
         
         /* Memperbaiki warna teks notifikasi agar terbaca di Dark Mode */
-        body.dark #box-notif div,
-        body.dark #box-notif p {
+        .dark body #box-notif div,
+        .dark body #box-notif p {
             color: #f8fafc !important;
         }
         
         /* Menyesuaikan warna garis pemisah antar notifikasi di Dark Mode */
-        body.dark #box-notif > div:first-child,
-        body.dark #box-notif a {
+        .dark body #box-notif > div:first-child,
+        .dark body #box-notif a {
             border-bottom: 1px solid #334155 !important;
         }
         
-        /* Efek hover di Dark Mode (Mengesampingkan inline JS Anda) */
-        body.dark #box-notif a:hover {
-            background: #334155 !important;
+        /* ==========================================================
+           8. LIVE CHAT GLASSMORPHISM & DARK MODE
+           ========================================================== */
+        .chat-sidebar {
+            background: rgba(255, 255, 255, 0.4) !important;
+            border-right: 1px solid rgba(0,0,0,0.05) !important;
         }
+        .chat-list-item:hover {
+            background: rgba(139, 26, 26, 0.05) !important;
+        }
+        .chat-sidebar-header {
+            border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+        }
+        .chat-main {
+            background: rgba(255, 255, 255, 0.2) !important;
+        }
+        .chat-main-header {
+            background: rgba(255, 255, 255, 0.5) !important;
+            border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+        }
+        .chat-main-footer {
+            background: rgba(255, 255, 255, 0.5) !important;
+            border-top: 1px solid rgba(0,0,0,0.05) !important;
+        }
+        .chat-message-received {
+            background: rgba(255, 255, 255, 0.9) !important;
+            border: 1px solid rgba(0,0,0,0.05) !important;
+        }
+
+        /* Dark Mode Adjustments */
+        .dark body .chat-sidebar {
+            background: rgba(15, 23, 42, 0.4) !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
+        }
+        .dark body .chat-sidebar-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        }
+        .dark body .chat-main {
+            background: rgba(15, 23, 42, 0.2) !important;
+        }
+        .dark body .chat-main-header {
+            background: rgba(15, 23, 42, 0.6) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        }
+        .dark body .chat-main-footer {
+            background: rgba(15, 23, 42, 0.6) !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+        }
+        .dark body .chat-message-received {
+            background: rgba(30, 41, 59, 0.8) !important;
+            color: #f8fafc !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+        .dark body .chat-list-item:hover {
+            background: rgba(255, 255, 255, 0.05) !important;
+        }
+        .dark body #message-input {
+            background: rgba(30, 41, 59, 0.5) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: #f8fafc !important;
+        }
+        .dark body #emoji-picker-container {
+            background: #1e293b !important;
+            border: 1px solid #334155 !important;
+        }
+        .dark body .chat-contact-active {
+            background: rgba(139, 26, 26, 0.2) !important;
+        }
+
+        /* ==========================================================
+           9. EXPORT DROPDOWN MENU
+           ========================================================== */
+        .export-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .export-dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #ffffff;
+            min-width: 180px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            z-index: 1000;
+            border-radius: 10px;
+            margin-top: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+            animation: fadeInDown 0.3s ease;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .export-dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .export-dropdown-content a:hover {
+            background-color: #f8fafc;
+            color: var(--maroon);
+            padding-left: 20px;
+        }
+
+        .export-dropdown-content a i {
+            font-size: 18px;
+        }
+
+        .export-dropdown:hover .export-dropdown-content {
+            display: block;
+        }
+
+        /* Dark Mode for Export Dropdown */
+        body.dark .export-dropdown-content {
+            background-color: #1e293b;
+            border-color: rgba(255,255,255,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        body.dark .export-dropdown-content a {
+            color: #f8fafc;
+        }
+
+        body.dark .export-dropdown-content a:hover {
+            background-color: rgba(255,255,255,0.05);
+        }
+        
+        

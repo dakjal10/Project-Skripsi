@@ -67,10 +67,26 @@ window.addEventListener('resize', function () {
 
 const switchMode = document.getElementById('switch-mode');
 
-switchMode.addEventListener('change', function () {
-	if(this.checked) {
-		document.body.classList.add('dark');
-	} else {
-		document.body.classList.remove('dark');
+// 1. Cek status tema saat halaman dimuat
+if (localStorage.getItem('theme') === 'dark') {
+	document.documentElement.classList.add('dark');
+	document.body.classList.add('dark'); // Tetap tambahkan ke body untuk kompatibilitas
+	if (switchMode) {
+		switchMode.checked = true;
 	}
-})
+}
+
+// 2. Event listener untuk perubahan switch
+if (switchMode) {
+	switchMode.addEventListener('change', function () {
+		if(this.checked) {
+			document.documentElement.classList.add('dark');
+			document.body.classList.add('dark');
+			localStorage.setItem('theme', 'dark');
+		} else {
+			document.documentElement.classList.remove('dark');
+			document.body.classList.remove('dark');
+			localStorage.setItem('theme', 'light');
+		}
+	});
+}

@@ -23,7 +23,7 @@
                 <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Avatar" class="w-32 h-32 rounded-full mb-4 object-cover border border-gray-200 shadow-sm">
             @endif
 
-            <input id="avatar" name="avatar" type="file" class="mt-1 block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500" accept="image/*" />
+            <input id="avatar" name="avatar" type="file" class="mt-1 block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring-red-500" accept="image/*" />
 
             <x-input-error class="mt-2" :messages="$errors->get('avatar')" />
         </div>

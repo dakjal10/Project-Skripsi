@@ -3,6 +3,54 @@
 @section('title', 'Live Chat - E-Pengaduan')
 
 @section('konten_utama')
+    <style>
+        /* Mobile Responsiveness for Live Chat */
+        @media (max-width: 768px) {
+            .table-data .order {
+                flex-direction: column !important;
+                height: 85vh !important;
+            }
+            .chat-sidebar {
+                width: 100% !important;
+            }
+            .chat-main {
+                width: 100% !important;
+                display: none !important;
+            }
+            /* Tampilkan obrolan dan sembunyikan kontak jika sedang aktif */
+            .order.chat-active .chat-sidebar {
+                display: none !important;
+            }
+            .order.chat-active .chat-main {
+                display: flex !important;
+            }
+            .mobile-back-btn {
+                display: flex !important;
+            }
+        }
+        .mobile-back-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--dark);
+            cursor: pointer;
+            margin-right: 15px;
+            padding: 0;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+        .mobile-back-btn:hover {
+            color: var(--maroon);
+        }
+        .chat-contact-active {
+            background-color: rgba(0,0,0,0.05);
+        }
+        .dark .chat-contact-active {
+            background-color: rgba(255,255,255,0.05);
+        }
+    </style>
     <div class="head-title">
         <div class="left">
             <h1>Live Chat</h1>
@@ -17,14 +65,14 @@
     <div class="table-data" style="margin-top: 20px;">
         <div class="order" style="padding: 0; display: flex; height: 75vh; min-height: 550px; overflow: hidden; border-radius: 10px;">
             
-            <div style="width: 30%; border-right: 1px solid #eee; background: #fff; display: flex; flex-direction: column;">
-                <div style="padding: 20px; border-bottom: 1px solid #eee; font-weight: 600; color: var(--dark); font-size: 16px;">
+            <div class="chat-sidebar" style="width: 30%; display: flex; flex-direction: column;">
+                <div class="chat-sidebar-header" style="padding: 20px; font-weight: 600; color: var(--dark); font-size: 16px;">
                     Kontak & Grup
                 </div>
                 
                 <ul style="list-style: none; padding: 0; margin: 0; overflow-y: auto; flex: 1;">
                     
-                    <li onclick="selectGroup()" style="padding: 15px 20px; border-bottom: 1px solid #f9f9f9; cursor: pointer; display: flex; align-items: center; gap: 15px; transition: 0.2s;" onmouseover="this.style.background='#f0fdf4'" onmouseout="this.style.background='transparent'">
+                    <li onclick="selectGroup()" class="chat-list-item" style="padding: 15px 20px; border-bottom: 1px solid rgba(0,0,0,0.02); cursor: pointer; display: flex; align-items: center; gap: 15px; transition: 0.2s;">
                         <div style="width: 45px; height: 45px; border-radius: 50%; background: #10B981; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; box-shadow: 0 2px 5px rgba(16,185,129,0.3);">
                             <i class='bx bxs-group'></i>
                         </div>
@@ -39,10 +87,10 @@
                             // Cek apakah user punya avatar. Jika tidak, gunakan UI Avatars otomatis.
                             $avatarUrl = (isset($user->avatar) && $user->avatar != '') 
                                 ? asset('storage/' . $user->avatar) 
-                                : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=EBF4FF&color=3B82F6&bold=true';
+                                : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=FDF2F2&color=8B1A1A&bold=true';
                         @endphp
 
-                        <li onclick="selectContact({{ $user->id }}, '{{ $user->name }}', '{{ $avatarUrl }}')" style="padding: 15px 20px; border-bottom: 1px solid #f9f9f9; cursor: pointer; display: flex; align-items: center; gap: 15px; transition: 0.2s;" onmouseover="this.style.background='#eff6ff'" onmouseout="this.style.background='transparent'">
+                        <li onclick="selectContact({{ $user->id }}, '{{ $user->name }}', '{{ $avatarUrl }}')" class="chat-list-item" style="padding: 15px 20px; border-bottom: 1px solid rgba(0,0,0,0.02); cursor: pointer; display: flex; align-items: center; gap: 15px; transition: 0.2s;">
                             
                             <img src="{{ $avatarUrl }}" alt="Foto" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 1px solid #e5e7eb; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
                             
@@ -57,9 +105,9 @@
                 </ul>
             </div>
 
-            <div style="width: 70%; display: flex; flex-direction: column; background: #f8fafc;">
+            <div class="chat-main" style="width: 70%; display: flex; flex-direction: column;">
                 
-                <div id="chat-header" style="padding: 20px; border-bottom: 1px solid #eee; background: #fff; display: flex; align-items: center; gap: 15px;">
+                <div id="chat-header" class="chat-main-header" style="padding: 20px; display: flex; align-items: center; gap: 15px;">
                     <div>
                         <h3 style="margin: 0; font-size: 18px; font-weight: 600; color: var(--dark);">Pilih Kontak atau Grup</h3>
                         <p style="margin: 0; font-size: 13px; color: var(--dark-grey);">Mulai percakapan dengan pengguna lain di sebelah kiri.</p>
@@ -72,19 +120,19 @@
                     </div>
                 </div>
 
-                <div style="position: relative; padding: 15px 20px; background: #fff; border-top: 1px solid #eee; display: flex; gap: 10px; align-items: center;">
+                <div class="chat-main-footer" style="position: relative; padding: 15px 20px; display: flex; gap: 10px; align-items: center;">
                     
                     <div id="emoji-picker-container" style="display: none; position: absolute; bottom: 70px; left: 20px; z-index: 9999; background: #fff; border: 1px solid #e5e7eb; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border-radius: 8px; width: 320px; height: 400px; overflow: hidden;">
                         <emoji-picker class="light" style="width: 100%; height: 100%; display: flex; --num-columns: 8; --emoji-size: 1.5rem;"></emoji-picker>
                     </div>
 
                     <button id="emoji-button" disabled style="background: transparent; border: none; font-size: 26px; cursor: pointer; color: var(--dark-grey); transition: 0.3s; display: flex; align-items: center; justify-content: center; padding: 0;">
-                        <i class='bx bx-smile' onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--dark-grey)'"></i>
+                        <i class='bx bx-smile' onmouseover="this.style.color='var(--maroon)'" onmouseout="this.style.color='var(--dark-grey)'"></i>
                     </button>
 
                     <input type="text" id="message-input" placeholder="Ketik pesan Anda di sini..." disabled style="flex: 1; padding: 12px 20px; border: 1px solid #ccc; border-radius: 30px; outline: none; font-family: inherit; font-size: 14px; background: #f9f9f9;">
                     
-                    <button id="send-button" disabled style="background: var(--blue, #3b82f6); color: white; border: none; padding: 12px 25px; border-radius: 30px; cursor: pointer; font-weight: bold; transition: 0.3s; display: flex; align-items: center; gap: 5px;">
+                    <button id="send-button" disabled style="background: var(--maroon, #8B1A1A); color: white; border: none; padding: 12px 25px; border-radius: 30px; cursor: pointer; font-weight: bold; transition: 0.3s; display: flex; align-items: center; gap: 5px;">
                         <span>Kirim</span>
                         <i class='bx bxs-send'></i>
                     </button>
@@ -95,9 +143,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    {{-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> --}}
-    <script type="module" src="https://unpkg.com/emoji-picker-element@1"></script>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@1"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@1/+esm"></script>
 
     <script>
         let currentReceiverId = null;
@@ -160,7 +206,12 @@
             currentChatType = 'group';
             resetBadge('group');
 
+            // Handle Active UI
+            document.querySelectorAll('.chat-list-item').forEach(el => el.classList.remove('chat-contact-active'));
+            event.currentTarget.classList.add('chat-contact-active');
+
             chatHeader.innerHTML = `
+                <button class="mobile-back-btn" onclick="backToSidebar()"><i class='bx bx-arrow-back'></i></button>
                 <div style="width: 45px; height: 45px; border-radius: 50%; background: #10B981; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;"><i class='bx bxs-group'></i></div>
                 <div>
                     <h3 style="margin: 0; font-size: 18px; font-weight: 600; color: var(--dark);">Grup Chat Publik</h3>
@@ -175,12 +226,17 @@
             currentChatType = 'personal';
             resetBadge(id);
 
+            // Handle Active UI
+            document.querySelectorAll('.chat-list-item').forEach(el => el.classList.remove('chat-contact-active'));
+            event.currentTarget.classList.add('chat-contact-active');
+
             // Ganti kotak warna biru menjadi tag <img>
             chatHeader.innerHTML = `
-                <img src="${avatarUrl}" alt="Profil" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 1px solid #e5e7eb; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                <button class="mobile-back-btn" onclick="backToSidebar()"><i class='bx bx-arrow-back'></i></button>
+                <img src="${avatarUrl}" alt="Profil" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
                 <div>
                     <h3 style="margin: 0; font-size: 18px; font-weight: 600; color: var(--dark);">${name}</h3>
-                    <p style="margin: 0; font-size: 13px; color: #3b82f6;">Online • Privat</p>
+                    <p style="margin: 0; font-size: 13px; color: var(--maroon);">Online • Privat</p>
                 </div>`;
             prepareChatRoom();
         }
@@ -190,6 +246,9 @@
             sendButton.disabled = false;
             emojiButton.disabled = false;
             chatMessages.innerHTML = '<div style="text-align: center; color: var(--dark-grey); margin-top: 20px;">Memuat riwayat pesan...</div>';
+            
+            // Aktifkan tampilan Chat di Mobile
+            document.querySelector('.table-data .order').classList.add('chat-active');
             
             const urlId = currentReceiverId === null ? 'group' : currentReceiverId;
 
@@ -204,9 +263,19 @@
                         });
                         scrollToBottom();
                     }
+                })
+                .catch(err => {
+                    console.error("Gagal memuat pesan", err);
                 });
             
             setTimeout(() => messageInput.focus(), 100);
+        }
+
+        // Fungsi navigasi 'Kembali' untuk mobile
+        function backToSidebar() {
+            document.querySelector('.table-data .order').classList.remove('chat-active');
+            currentReceiverId = null;
+            currentChatType = 'none';
         }
 
         function renderMessage(text, type, timeString = null) {
@@ -242,14 +311,12 @@
             timeDiv.style.marginTop = '4px';
 
             if (isSent) {
-                bubble.style.background = 'var(--blue, #3b82f6)';
+                bubble.style.background = 'var(--maroon, #8B1A1A)';
                 bubble.style.color = '#fff';
                 bubble.style.borderBottomRightRadius = '0px';
                 timeDiv.style.color = 'rgba(255,255,255,0.7)';
             } else {
-                bubble.style.background = '#fff';
-                bubble.style.color = 'var(--dark, #333)';
-                bubble.style.border = '1px solid #eee';
+                bubble.classList.add('chat-message-received');
                 bubble.style.borderBottomLeftRadius = '0px';
                 timeDiv.style.color = '#999';
             }
@@ -301,6 +368,14 @@
             
             // Logika buka-tutup yang lebih solid
             if (emojiPickerContainer.style.display === 'none' || emojiPickerContainer.style.display === '') {
+                // Sesuaikan tema emoji picker dengan tema body
+                if (document.body.classList.contains('dark')) {
+                    picker.classList.remove('light');
+                    picker.classList.add('dark');
+                } else {
+                    picker.classList.remove('dark');
+                    picker.classList.add('light');
+                }
                 emojiPickerContainer.style.display = 'block';
             } else {
                 emojiPickerContainer.style.display = 'none';

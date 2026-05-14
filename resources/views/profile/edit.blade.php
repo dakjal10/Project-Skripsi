@@ -70,14 +70,14 @@
         }
         .profile-card input:focus {
             outline: none;
-            border-color: var(--blue, #3b82f6);
+            border-color: var(--maroon, #8B1A1A);
             background-color: #ffffff;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+            box-shadow: 0 0 0 3px rgba(139, 26, 26, 0.15);
         }
 
         /* Merapikan Tombol Simpan */
         .profile-card button {
-            background-color: var(--blue, #3b82f6);
+            background-color: var(--maroon, #8B1A1A);
             color: #ffffff;
             border: none;
             padding: 10px 24px;
@@ -90,7 +90,7 @@
             margin-top: 10px;
         }
         .profile-card button:hover {
-            background-color: #2563eb;
+            background-color: #661010;
         }
 
         /* Khusus Area Berbahaya (Hapus Akun) */
