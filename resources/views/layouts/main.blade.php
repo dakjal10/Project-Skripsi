@@ -47,16 +47,10 @@
             <span class="brand-text">E-Pengaduan</span>
         </a>
         <ul class="side-menu top">
-           <li class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                <a href="{{ route('dashboard') }}"><i class='bx bxs-dashboard'></i><span class="text">Dashboard</span></a>
+           <li class="{{ (request()->routeIs('dashboard') || (Auth::user()->userRole && Auth::user()->userRole->role_name === 'admin' && request()->routeIs('admin.*'))) ? 'active' : '' }}">
+                <a href="{{ Auth::user()->userRole && Auth::user()->userRole->role_name === 'admin' ? route('admin.index') : route('dashboard') }}"><i class='bx bxs-dashboard'></i><span class="text">Dashboard</span></a>
             </li>
             
-            @if(Auth::user()->userRole && Auth::user()->userRole->role_name === 'admin')
-            <li class="{{ request()->routeIs('admin.*') ? 'active' : '' }}">
-                <a href="{{ route('admin.index') }}"><i class='bx bxs-message-dots'></i><span class="text">Daftar Pengaduan</span></a>
-            </li>
-            @endif
-
             @if(Auth::user()->userRole && Auth::user()->userRole->role_name === 'mahasiswa')
             <li class="{{ request()->routeIs('mahasiswa.laporan.create') ? 'active' : '' }}">
                 <a href="{{ route('mahasiswa.laporan.create') }}"><i class='bx bxs-edit'></i><span class="text">Buat Laporan</span></a>
