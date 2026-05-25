@@ -4,10 +4,11 @@
     <title>Laporan Pengaduan Mahasiswa</title>
     <style>
         body { font-family: 'Helvetica', 'Arial', sans-serif; font-size: 11px; color: #333; line-height: 1.5; }
-        .header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 15px; margin-bottom: 20px; }
-        .logo { width: 350px; height: auto; }
-        .title { font-size: 18px; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
-        .subtitle { font-size: 12px; margin-bottom: 20px; }
+        .header { text-align: center; padding-bottom: 10px; margin-bottom: 20px; }
+        .logo { width: 300px;}
+        .divider { border: none; border-top: 3px solid #8B1A1A; margin: 10px 0 12px 0; }
+        .title { font-size: 15px; font-weight: bold; text-transform: uppercase; margin-bottom: 4px; color: #222; }
+        .subtitle { font-size: 11px; color: #555; }
         
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th, td { border: 1px solid #999; padding: 10px 8px; text-align: left; }
@@ -27,9 +28,9 @@
 <body>
 
     <div class="header">
-        <div style="color: #8B1A1A; font-size: 24px; font-weight: bold; letter-spacing: 1px; margin-bottom: 5px;">HORIZON UNIVERSITY INDONESIA</div>
-        <div style="color: #333; font-size: 14px; font-weight: bold; letter-spacing: 3px; margin-bottom: 10px;">K A R A W A N G</div>
-        <div class="title" style="margin-top: 20px; border-top: 1px solid #333; padding-top: 15px;">Rekapitulasi Pengaduan Mahasiswa</div>
+        <img src="{{ public_path('images/Horizon_University_Indonesia_Logo.png') }}" class="logo" alt="Logo Horizon University Indonesia">
+        <hr class="divider">
+        <div class="title">Rekapitulasi Pengaduan Mahasiswa</div>
         <div class="subtitle">Dicetak pada: {{ \Carbon\Carbon::now()->translatedFormat('d F Y, H:i') }} WIB</div>
     </div>
 

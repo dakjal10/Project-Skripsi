@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
 // Halaman Dashboard - Harus dibungkus middleware 'auth' agar login dulu
 Route::get('/dashboard', function (Illuminate\Http\Request $request) { // <-- Tambahkan Request di sini
     $role = Auth::user()->userRole->role_name ?? 'mahasiswa';
