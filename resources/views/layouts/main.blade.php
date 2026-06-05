@@ -25,6 +25,9 @@
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
+    {{-- Stack untuk style tambahan dari halaman child --}}
+    @stack('styles')
+    
     {{-- Script Pencegah Kilatan Putih (Dark Mode) --}}
     <script>
         if (localStorage.getItem('theme') === 'dark') {

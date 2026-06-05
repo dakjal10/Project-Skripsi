@@ -2,14 +2,76 @@
 
 @section('title', 'Daftar Pengaduan - Admin')
 
+@push('styles')
+{{-- Override khusus untuk dashboard admin agar 4 kartu statistik sejajar 1 baris --}}
+<style>
+    /* Paksa 4 kolom sejajar di layar lebar, kolom lebih kecil & proporsional */
+    #content main .box-info {
+        grid-template-columns: repeat(4, 1fr) !important;
+        grid-gap: 16px !important;
+        margin-top: 24px !important;
+    }
+
+    /* Perkecil padding kartu */
+    #content main .box-info li {
+        padding: 16px !important;
+        grid-gap: 14px !important;
+        border-radius: 16px !important;
+    }
+
+    /* Perkecil ikon */
+    #content main .box-info li .bx {
+        width: 56px !important;
+        height: 56px !important;
+        font-size: 26px !important;
+        border-radius: 12px !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* Perkecil angka statistik */
+    #content main .box-info li .text h3 {
+        font-size: 20px !important;
+        margin-bottom: 2px !important;
+    }
+
+    /* Perkecil label teks */
+    #content main .box-info li .text p {
+        font-size: 12px !important;
+        line-height: 1.3 !important;
+    }
+
+    /* Sesuaikan div lingkaran ikon "Selesai" */
+    #content main .box-info li > div[style*="border-radius: 50%"] {
+        width: 56px !important;
+        height: 56px !important;
+        flex-shrink: 0 !important;
+    }
+
+    #content main .box-info li > div[style*="border-radius: 50%"] i {
+        font-size: 26px !important;
+    }
+
+    /* Responsive: kembali ke 2 kolom di layar kecil */
+    @media screen and (max-width: 900px) {
+        #content main .box-info {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+    }
+
+    @media screen and (max-width: 576px) {
+        #content main .box-info {
+            grid-template-columns: 1fr !important;
+        }
+    }
+</style>
+@endpush
+
 @section('konten_utama')
     <div class="head-title">
         <div class="left">
             <h1>Daftar Pengaduan Mahasiswa</h1>
             <ul class="breadcrumb">
-                <li><a href="#">Dashboard</a></li>
-                <li><i class='bx bx-chevron-right'></i></li>
-                <li><a class="active" href="#">Pengaduan</a></li>
+                <li><a class="active" href="{{ route('admin.index') }}">Dashboard</a></li>
             </ul>
         </div>
     </div>

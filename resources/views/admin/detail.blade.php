@@ -76,8 +76,8 @@
         .dark .text-gray-600, .dark .text-gray-500, .dark .text-gray-400 { color: #AAAAAA !important; }
 
         /* Sembunyikan layout utama, TAPI kecualikan elemen di dalam Picmo */
-        nav:not(.picmo__picker nav), 
-        header:not(.picmo__picker header), 
+        nav:not(#picker-container nav), 
+        header:not(#picker-container header), 
         .navbar, .topbar, #sidebar {
             display: none !important;
         }
@@ -86,41 +86,33 @@
             padding-top: 1rem !important;
         }
 
-        /* --- FIX TAMPILAN PICMO EMOJI PICKER (MENGGUNAKAN TRIK SCALE) --- */
-        .pickerContainer {
-            --background-color: #ffffff;
-            --text-color: #1e293b;
-            --border-color: #e2e8f0;
-        }
-        .dark .pickerContainer {
-            --background-color: #0f172a;
-            --text-color: #f1f5f9;
-            --border-color: rgba(255, 255, 255, 0.1);
-        }
-
+        /* --- FIX TAMPILAN PICMO EMOJI PICKER --- */
         /* 1. Kembalikan ukuran Picmo ke normal agar isinya LEGA dan UTUH 100% */
-        .picmo__picker {
+        #picker-container .picmo__picker {
             --picker-width: 320px !important;
             --picker-height: 350px !important;
-            --emojis-per-row: 8 !important;   
+            --emojis-per-row: 8 !important;
             width: 100% !important;
         }
 
-        /* 2. Susutkan/Zoom-out keseluruhan container secara proporsional! */
+        /* 2. Susutkan keseluruhan container secara proporsional */
         #picker-container {
-            width: auto !important;
-            height: auto !important;
-            transform: scale(0.6); /* Susutkan menjadi 60% dari ukuran asli */
-            transform-origin: bottom right; /* Titik pusat menyusutnya di pojok kanan bawah dekat tombol */
+            position: absolute;
+            right: 0;
+            bottom: 45px;
+            z-index: 1000;
+            transform: scale(0.85);
+            transform-origin: bottom right;
         }
 
-        /* Kembalikan struktur Search dan Tab Kategori */
-        .picmo__picker header, .picmo__picker nav {
+        /* Pastikan struktur Search dan Tab Kategori aman */
+        #picker-container .picmo__picker header,
+        #picker-container .picmo__picker nav {
             display: flex !important;
         }
 
-        /* Pastikan tombol emoji rapi dan presisi */
-        .picmo__emojiButton {
+        /* Pastikan tombol emoji rapi */
+        #picker-container .picmo__emojiButton {
             background-color: transparent !important;
             box-shadow: none !important;
             border: none !important;
@@ -131,15 +123,19 @@
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            width: 100% !important; 
-            aspect-ratio: 1 / 1 !important; 
+            width: 100% !important;
+            aspect-ratio: 1 / 1 !important;
         }
 
-        .picmo__emojiButton:hover {
-            background-color: #f3f4f6 !important; 
+        #picker-container .picmo__emojiButton:hover {
+            background-color: #f3f4f6 !important;
         }
-        .dark .picmo__emojiButton:hover {
-            background-color: rgba(255, 255, 255, 0.1) !important; 
+
+        /* Tema Gelap untuk Picmo */
+        .dark #picker-container .picmo__picker {
+            --background-color: #0f172a;
+            --text-color: #f1f5f9;
+            --border-color: rgba(255, 255, 255, 0.1);
         }
         /* -------------------------------------- */
     </style>
@@ -171,7 +167,7 @@
                         </div>
                     </div>
 
-                    <div class="custom-card overflow-hidden mb-6">
+                    <div class="custom-card mb-6">
                         <div class="p-6 md:p-8 relative"> 
                             @if($pengaduan->balasan)
                                 <h4 class="text-lg font-bold flex items-center gap-2 border-b border-gray-100 pb-4 text-gray-900 mb-4">
@@ -202,7 +198,7 @@
                                             <i class='bx bx-smile text-xl'></i>
                                         </button>
 
-                                        <div id="picker-container" class="absolute right-0 bottom-[110%] z-[9999] shadow-2xl rounded-xl border border-gray-200 custom-card" style="display: none;"></div>
+                                        <div id="picker-container" style="display: none;"></div>
                                     </div>
 
                                     <div class="flex flex-wrap items-center justify-between gap-4 mt-4">
@@ -327,13 +323,12 @@
         </div>
     </div>
     
-    <script src="https://cdn.jsdelivr.net/npm/@picmo/renderer-fontawesome@5.1.1/dist/umd/index.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/picmo@5.8.5/dist/umd/index.min.js"></script>
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof picmo === 'undefined') {
-                console.error('Library Picmo gagal dimuat.');
+                console.warn('Picmo tidak termuat, emoji tidak tersedia.');
                 return;
             }
 
@@ -342,16 +337,15 @@
             const textarea = document.querySelector('#isi_tanggapan');
 
             if (trigger && container && textarea) {
-                container.innerHTML = '';
-                
-                // Tambahkan 'emojisPerRow' agar posisinya merapat
                 const picker = picmo.createPicker({
                     rootElement: container,
                     showSearch: true,
                     showPreview: false,
-                    emojisPerRow: 8, // Mengunci susunan 8 emoji per baris agar rapi
+                    emojisPerRow: 8,
+                    displayMessages: { search: 'Cari emoji...' }
                 });
 
+                // Tampilkan/Sembunyikan panel emoji
                 trigger.addEventListener('click', (e) => {
                     e.stopPropagation();
                     e.preventDefault();
@@ -364,16 +358,19 @@
                     }
                 });
 
+                // Sisipkan emoji ke textarea
                 picker.addEventListener('emoji:select', event => {
+                    const emoji = event.emoji;
                     const start = textarea.selectionStart;
                     const end = textarea.selectionEnd;
-                    textarea.value = textarea.value.substring(0, start) + event.emoji + textarea.value.substring(end);
+                    textarea.value = textarea.value.substring(0, start) + emoji + textarea.value.substring(end);
                     textarea.focus();
-                    textarea.selectionStart = textarea.selectionEnd = start + event.emoji.length;
+                    textarea.selectionStart = textarea.selectionEnd = start + emoji.length;
                     container.style.display = 'none';
                     trigger.classList.remove('text-red-600', 'border-red-300', 'bg-red-50');
                 });
 
+                // Tutup jika klik di luar
                 document.addEventListener('click', (e) => {
                     if (!container.contains(e.target) && e.target !== trigger && !trigger.contains(e.target)) {
                         container.style.display = 'none';
