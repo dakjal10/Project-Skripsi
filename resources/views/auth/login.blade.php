@@ -35,7 +35,7 @@
     
     <div class="absolute inset-0 z-0">
         <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2000" alt="Background" class="w-full h-full object-cover blur-sm opacity-20">
-        <div class="absolute inset-0 bg-gradient-to-br from-red-950 via-red-900 to-rose-950 opacity-90"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-900 to-red-950 opacity-95"></div>
         
         <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-red-600 rounded-full blur-[128px] opacity-20 animate-pulse"></div>
         <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-rose-600 rounded-full blur-[128px] opacity-20 animate-pulse delay-500"></div>
@@ -44,9 +44,9 @@
     
     <div class="hidden lg:flex flex-1 items-center justify-center z-10 animate-fade-in delay-200">
         <div class="text-center">
-            <img src="{{ asset('images/images-removebg-preview.png') }}" alt="Logo" class="max-w-md opacity-25 grayscale brightness-150 hover:opacity-40 transition-opacity duration-700" style="filter: drop-shadow(0 0 30px rgba(139,26,26,0.2));">
+            <img src="{{ asset('images/images-removebg-preview.png') }}" alt="Logo" class="max-w-md opacity-90 hover:opacity-100 transition-opacity duration-700" style="filter: drop-shadow(0 0 30px rgba(139,26,26,0.5));">
             <div class="mt-8">
-                <h2 class="text-2xl font-light tracking-[0.5em] text-white/40 uppercase">Horizon University</h2>
+                <h2 class="text-2xl font-light tracking-[0.5em] text-white/90 uppercase font-semibold">Horizon University</h2>
             </div>
         </div>
     </div>

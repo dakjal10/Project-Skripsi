@@ -82,6 +82,55 @@ class LaporanController extends Controller
     }
 
     // ======fungsi untuk Fitur Penilaian (Rating)========
+    public function edit($id)
+    {
+        $laporan = \App\Models\Pengaduan::findOrFail($id);
+
+        // Hanya bisa diedit jika statusnya pending dan laporan milik user tersebut
+        if (strtolower($laporan->status) !== 'pending' || $laporan->user_id !== Auth::id()) {
+            return redirect()->route('dashboard')->with('error', 'Laporan tidak dapat diedit karena sudah diproses atau Anda tidak memiliki akses.');
+        }
+
+        return view('mahasiswa.laporan.edit', compact('laporan'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $laporan = \App\Models\Pengaduan::findOrFail($id);
+
+        // Pastikan status masih pending dan milik user
+        if (strtolower($laporan->status) !== 'pending' || $laporan->user_id !== Auth::id()) {
+            return redirect()->route('dashboard')->with('error', 'Laporan tidak dapat diedit karena sudah diproses atau Anda tidak memiliki akses.');
+        }
+
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'isi' => 'required|string',
+            'bukti' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120', // Maks 5MB
+        ]);
+
+        $dataUpdate = [
+            'judul' => $request->judul,
+            'isi' => $request->isi,
+        ];
+
+        // 1. Cek apakah ada file 'bukti' baru yang diunggah
+        if ($request->hasFile('bukti')) {
+            // 2. Hapus file lama jika ada
+            if ($laporan->bukti) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($laporan->bukti);
+            }
+            
+            // 3. Simpan file baru ke 'storage/app/public/bukti_laporan'
+            $buktiPath = $request->file('bukti')->store('bukti_laporan', 'public');
+            $dataUpdate['bukti'] = $buktiPath;
+        }
+
+        $laporan->update($dataUpdate);
+
+        return redirect()->route('mahasiswa.laporan.show', $laporan->id)->with('success', 'Laporan berhasil diperbarui.');
+    }
+
     public function publik()
     {
         // Mengambil semua laporan beserta nama pembuatnya, diurutkan dari yang paling baru

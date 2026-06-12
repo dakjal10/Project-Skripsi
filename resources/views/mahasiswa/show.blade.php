@@ -176,13 +176,23 @@
         .star-svg {
             transition: color 0.2s ease-in-out;
         }
+
+        .btn-maroon {
+            background: linear-gradient(135deg, #8B1A1A, #B22222) !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 15px rgba(139, 26, 26, 0.3) !important;
+        }
+        .btn-maroon:hover {
+            background: linear-gradient(135deg, #B22222, #8B1A1A) !important;
+            box-shadow: 0 8px 25px rgba(139, 26, 26, 0.4) !important;
+        }
     </style>
 </head>
 <body class="antialiased py-6 sm:px-6 lg:px-8">
 
     <div class="max-w-7xl mx-auto">
         
-        <div class="mb-6 px-4 md:px-0">
+        <div class="mb-6 px-4 md:px-0 flex justify-between items-center">
             <a href="{{ route('dashboard') }}" class="custom-card hover:bg-red-50/20 hover:text-red-500 border border-gray-200 dark:border-white/10 font-semibold py-2.5 px-5 rounded-xl inline-flex items-center transition duration-200 shadow-sm text-sm text-value">
                 <i class='bx bx-arrow-back mr-2 text-xl'></i>
                 Kembali ke Dashboard
@@ -195,7 +205,14 @@
                 
                 <div class="custom-card overflow-hidden mb-6">
                     <div class="p-6 md:p-8">
-                        <h3 class="text-3xl font-bold mb-6 text-gray-900">{{ $laporan->judul }}</h3>
+                        <div class="relative mb-6">
+                            <h3 class="text-3xl font-bold text-gray-900 pr-14">{{ $laporan->judul }}</h3>
+                            @if(strtolower($laporan->status) == 'pending' && $laporan->user_id == auth()->id())
+                                <a href="{{ route('mahasiswa.laporan.edit', $laporan->id) }}" class="absolute top-0 right-0 btn-maroon text-white p-2.5 rounded-xl inline-flex items-center justify-center transition duration-200 shadow-md" title="Edit Laporan">
+                                    <i class='bx bx-edit text-xl'></i>
+                                </a>
+                            @endif
+                        </div>
                         
                         <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Deskripsi Laporan</h4>
                         <hr class="border-gray-100 mb-4">

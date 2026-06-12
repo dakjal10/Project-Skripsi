@@ -61,9 +61,6 @@ class AdminController extends Controller
             'laporan_diproses', 
             'laporan_selesai'
         )); 
-    
-        dd($pengaduan->user); // ini code chek yg baru saya tambahkan
-        $pengaduan->user->notify(new StatusLaporanNotification($pengaduan));
     }
 // TAMBAHKAN FUNGSI INI
     public function updateStatus(Request $request, $id)

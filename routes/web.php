@@ -62,7 +62,7 @@ Route::get('/dashboard', function (Illuminate\Http\Request $request) { // <-- Ta
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy'); // Fungsi Hapus Akun dinonaktifkan
     
 });
 Route::middleware(['auth'])->group(function () {
@@ -100,6 +100,8 @@ require __DIR__.'/auth.php';
     Route::prefix('mahasiswa/laporan')->name('mahasiswa.laporan.')->group(function () {
         Route::get('/buat', [LaporanController::class, 'create'])->name('create');
         Route::post('/simpan', [LaporanController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [LaporanController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [LaporanController::class, 'update'])->name('update');
     });
     // Tambahkan di dalam grup rute Admin Anda
     Route::get('/admin/notifikasi/{id}/baca', [App\Http\Controllers\AdminController::class, 'bacaNotifikasi'])->name('admin.notif.baca');
