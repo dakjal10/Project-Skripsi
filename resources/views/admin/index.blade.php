@@ -3,23 +3,23 @@
 @section('title', 'Daftar Pengaduan - Admin')
 
 @push('styles')
-{{-- Override khusus untuk dashboard admin agar 4 kartu statistik sejajar 1 baris --}}
+
 <style>
-    /* Paksa 4 kolom sejajar di layar lebar, kolom lebih kecil & proporsional */
+    
     #content main .box-info {
         grid-template-columns: repeat(4, 1fr) !important;
         grid-gap: 16px !important;
         margin-top: 24px !important;
     }
 
-    /* Perkecil padding kartu */
+    
     #content main .box-info li {
         padding: 16px !important;
         grid-gap: 14px !important;
         border-radius: 16px !important;
     }
 
-    /* Perkecil ikon */
+    
     #content main .box-info li .bx {
         width: 56px !important;
         height: 56px !important;
@@ -28,19 +28,19 @@
         flex-shrink: 0 !important;
     }
 
-    /* Perkecil angka statistik */
+    
     #content main .box-info li .text h3 {
         font-size: 20px !important;
         margin-bottom: 2px !important;
     }
 
-    /* Perkecil label teks */
+    
     #content main .box-info li .text p {
         font-size: 12px !important;
         line-height: 1.3 !important;
     }
 
-    /* Sesuaikan div lingkaran ikon "Selesai" */
+    
     #content main .box-info li > div[style*="border-radius: 50%"] {
         width: 56px !important;
         height: 56px !important;
@@ -51,7 +51,7 @@
         font-size: 26px !important;
     }
 
-    /* Responsive: kembali ke 2 kolom di layar kecil */
+    
     @media screen and (max-width: 900px) {
         #content main .box-info {
             grid-template-columns: repeat(2, 1fr) !important;
@@ -125,13 +125,13 @@
         <div class="order">
             <div class="head" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 15px;">
                 
-                {{-- KIRI: Judul --}}
+                
                 <h3>Laporan Masuk</h3>
                 
-                {{-- KANAN: Semua Aksi berjejer ke kanan --}}
+                
                 <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
 
-                    {{-- 1. Form Search, Filter, Export --}}
+                    
                     <form action="{{ route('admin.index') }}" method="GET" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 0; padding: 0; background: transparent;">
                         
                         <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama/judul..." style="padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; outline: none;">
@@ -169,10 +169,10 @@
                         </div>
                     </form>
 
-                    {{-- 2. Tombol Bersihkan Arsip (Hanya Icon, Seukuran tombol Cari, Di ujung kanan) --}}
+                    
                     <form action="{{ route('admin.laporan.bersihkan') }}" method="POST" onsubmit="return confirm('Peringatan: Yakin ingin membersihkan semua data laporan Selesai yang usianya lebih dari 6 bulan? File bukti gambar juga akan terhapus secara permanen dari server.')" style="margin: 0; padding: 0;">
                         @csrf
-                        {{-- Menggunakan padding yang sama dengan tombol Cari & Export, text dihapus, icon diperbesar --}}
+                        
                         <button type="submit" title="Bersihkan Arsip Laporan (> 6 Bulan)" style="background: #dc3545; color: white; padding: 8px 15px; border-radius: 6px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s;">
                             <i class='bx bx-trash' style="font-size: 18px;"></i>
                         </button>

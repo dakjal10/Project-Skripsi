@@ -29,7 +29,7 @@
             border-color: rgba(139, 26, 26, 0.6);
             box-shadow: 0 0 15px rgba(139, 26, 26, 0.2);
         }
-        /* Custom scrollbar for register form if content is long */
+        
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(139, 26, 26, 0.3); border-radius: 10px; }
@@ -45,7 +45,7 @@
         <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-rose-600 rounded-full blur-[128px] opacity-20 animate-pulse delay-500"></div>
     </div>
 
-    <!-- Sisi Kiri: Logo -->
+    
     <div class="hidden lg:flex flex-1 items-center justify-center z-10 animate-fade-in delay-200">
         <div class="text-center">
             <img src="{{ asset('images/images-removebg-preview.png') }}" alt="Logo" class="max-w-md opacity-25 grayscale brightness-150 hover:opacity-40 transition-opacity duration-700" style="filter: drop-shadow(0 0 30px rgba(139,26,26,0.2));">
@@ -55,7 +55,7 @@
         </div>
     </div>
 
-    <!-- Sisi Kanan: Card Register -->
+    
     <div class="relative z-10 w-full max-w-md p-6 lg:p-8 mx-4 bg-white/5 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] animate-fade-in delay-100 lg:ml-20 overflow-y-auto max-h-[95vh]">
         
         <div class="mb-6 text-center">
@@ -69,7 +69,7 @@
         <form method="POST" action="{{ route('register') }}" class="space-y-4">
             @csrf
 
-            <!-- Name -->
+            
             <div class="animate-fade-in delay-200">
                 <label for="name" class="block text-sm font-semibold text-gray-200 mb-1">Nama Lengkap</label>
                 <div class="relative">
@@ -82,7 +82,7 @@
                 <x-input-error :messages="$errors->get('name')" class="mt-1 text-red-400 text-xs" />
             </div>
 
-            <!-- Email -->
+            
             <div class="animate-fade-in delay-300">
                 <label for="email" class="block text-sm font-semibold text-gray-200 mb-1">Email</label>
                 <div class="relative">
@@ -95,7 +95,7 @@
                 <x-input-error :messages="$errors->get('email')" class="mt-1 text-red-400 text-xs" />
             </div>
 
-            <!-- Password -->
+            
             <div class="animate-fade-in delay-400">
                 <label for="password" class="block text-sm font-semibold text-gray-200 mb-1">Password</label>
                 <div class="relative">
@@ -108,7 +108,7 @@
                 <x-input-error :messages="$errors->get('password')" class="mt-1 text-red-400 text-xs" />
             </div>
 
-            <!-- Confirm Password -->
+            
             <div class="animate-fade-in delay-500">
                 <label for="password_confirmation" class="block text-sm font-semibold text-gray-200 mb-1">Konfirmasi Password</label>
                 <div class="relative">

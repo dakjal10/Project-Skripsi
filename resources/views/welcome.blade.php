@@ -9,8 +9,8 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
-        /* --- WARNA CUSTOM (ANTI-GAGAL) --- */
-        /* Kode warna ini memotong sistem Tailwind agar PASTI muncul */
+        
+        
         .bg-kampus-maroon { background-color: #8B1A1A !important; }
         .text-kampus-maroon { color: #8B1A1A !important; }
         .border-kampus-maroon { border-color: #8B1A1A !important; }
@@ -20,7 +20,7 @@
         .bg-kampus-soft { background-color: #FDF2F2 !important; }
         .text-kampus-soft { color: #F87171 !important; }
 
-        /* --- Animasi Kustom Tetap Dipertahankan --- */
+        
         @keyframes blob {
             0% { transform: translate(0px, 0px) scale(1); }
             33% { transform: translate(30px, -50px) scale(1.1); }
@@ -37,7 +37,7 @@
         }
         .reveal { animation: fadeInUp 0.8s ease-out forwards; }
 
-        /* Smooth Scroll */
+        
         html { scroll-behavior: smooth; }
 
         .glass-nav {

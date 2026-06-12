@@ -11,10 +11,10 @@ switch ($width) {
     case '48':
         $width = 'w-48';
         break;
-    case '80': // Tambahkan ini
+    case '80': 
         $width = 'w-80';
         break;
-    case '96': // Tambahkan ini agar bisa lebih lebar lagi
+    case '96': 
         $width = 'w-96';
         break;
 }

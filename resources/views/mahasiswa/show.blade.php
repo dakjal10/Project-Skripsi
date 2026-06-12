@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Laporan - e-Pengaduan</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    {{-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> --}}
+    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     
@@ -45,7 +45,7 @@
             color: var(--text-main);
         }
 
-        /* CARD STYLE - SOLID IN LIGHT, SOLID IN DARK (MATCHING DASHBOARD) */
+        
         .custom-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -61,7 +61,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        /* TEXT CONTRAST */
+        
         .text-label {
             color: #64748b;
             font-size: 0.75rem;
@@ -77,7 +77,7 @@
         }
         .dark .text-value { color: #FBFBFB; }
 
-        /* OVERRIDES */
+        
         .dark .text-gray-900, .dark .text-gray-800, .dark .text-gray-700 { color: #FBFBFB !important; }
         .dark .text-gray-600, .dark .text-gray-500, .dark .text-gray-400 { color: #AAAAAA !important; }
 
@@ -95,7 +95,7 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* BOX CONTAINERS */
+        
         .box-desc {
             background: #fef2f2;
             border: 1px solid #fee2e2;
@@ -123,11 +123,11 @@
             color: #4ade80;
         }
 
-        /* OVERRIDES */
+        
         .dark .text-gray-900, .dark .text-gray-800, .dark .text-gray-700 { color: #f8fafc !important; }
         .dark .text-gray-600, .dark .text-gray-500, .dark .text-gray-400 { color: #cbd5e1 !important; }
         
-        /* FIX PICMO EMOJI PICKER */
+        
         .pickerContainer {
             --background-color: #ffffff;
             --text-color: #1e293b;
@@ -149,7 +149,7 @@
         #picker-container-ulasan {
             width: auto !important;
             height: auto !important;
-            transform: scale(0.6); /* Disamakan dengan admin (0.6) agar lebih ramping dan tidak terpotong */
+            transform: scale(0.6); 
             transform-origin: bottom right; 
         }
 
@@ -172,7 +172,7 @@
 
         .picmo__emojiButton:hover { background-color: #f3f4f6 !important; }
         
-        /* Animasi Bintang */
+        
         .star-svg {
             transition: color 0.2s ease-in-out;
         }
@@ -237,13 +237,13 @@
                         </h4>
 
                         @if(is_null($laporan->rating))
-                            {{-- Form Jika Belum Memberi Rating --}}
+                            
                             <p class="text-sm font-bold mb-5 text-gray-700">Bagaimana tingkat kepuasan Anda terhadap penanganan laporan ini?</p>
                             
                             <form action="{{ route('mahasiswa.laporan.rating', $laporan->id) }}" method="POST">
                                 @csrf
                                 
-                                {{-- UI Bintang --}}
+                                
                                 <div class="flex items-center space-x-2 mb-6" id="star-container">
                                     @for($i = 1; $i <= 5; $i++)
                                         <label for="star{{ $i }}" class="cursor-pointer transition duration-150 hover:scale-110 drop-shadow-sm" id="label-star{{ $i }}">
@@ -255,7 +255,7 @@
                                     @endfor
                                 </div>
 
-                                {{-- Textarea Ulasan --}}
+                                
                                 <div class="mb-6 relative w-full">
                                     <label for="ulasan" class="text-sm font-bold text-gray-700 mb-2 block">Berikan Ulasan Singkat (Opsional)</label>
                                     <div class="relative">
@@ -275,7 +275,7 @@
                             </form>
 
                         @else
-                            {{-- Tampilan Jika Sudah Memberi Rating --}}
+                            
                             <div class="bg-yellow-50/30 border border-yellow-300 p-5 rounded-xl">
                                 <div class="mb-3 flex items-center gap-2">
                                     <span class="text-sm font-bold text-gray-700">Bintang:</span>
@@ -338,7 +338,6 @@
                                 <p class="text-label mb-1">Dikirim Oleh</p>
                                 <div class="flex items-center gap-3 mt-1">
                                     @php
-                                        // Gunakan data dari relasi user jika ada, jika tidak gunakan akun login
                                         $pengirim = $laporan->user ?? Auth::user();
                                     @endphp
                                     
@@ -392,7 +391,6 @@
     <script src="https://cdn.jsdelivr.net/npm/picmo@5.8.5/dist/umd/index.min.js"></script>
 
     <script>
-        // Fungsi untuk meng-update warna bintang secara dinamis saat diklik
         function updateStars(rating) {
             for (let i = 1; i <= 5; i++) {
                 const starSvg = document.querySelector(`#label-star${i} svg`);
@@ -406,7 +404,6 @@
             }
         }
 
-        // Fungsi Picmo Emoji Picker
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof picmo === 'undefined') {
                 console.warn('Picmo tidak termuat, emoji tidak tersedia.');
@@ -425,7 +422,6 @@
                     emojisPerRow: 8,
                 });
 
-                // Tampilkan/Sembunyikan panel emoji
                 trigger.addEventListener('click', (e) => {
                     e.stopPropagation();
                     e.preventDefault();
@@ -438,7 +434,6 @@
                     }
                 });
 
-                // Sisipkan emoji ke textarea
                 picker.addEventListener('emoji:select', event => {
                     const start = textarea.selectionStart;
                     const end = textarea.selectionEnd;
@@ -449,7 +444,6 @@
                     trigger.classList.remove('text-red-600', 'bg-red-50');
                 });
 
-                // Tutup panel jika klik di luar area
                 document.addEventListener('click', (e) => {
                     if (!container.contains(e.target) && e.target !== trigger && !trigger.contains(e.target)) {
                         container.style.display = 'none';

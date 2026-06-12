@@ -4,7 +4,7 @@
 
 @section('konten_utama')
     <style>
-        /* Mobile Responsiveness for Live Chat */
+        
         @media (max-width: 768px) {
             .table-data .order {
                 flex-direction: column !important;
@@ -17,7 +17,7 @@
                 width: 100% !important;
                 display: none !important;
             }
-            /* Tampilkan obrolan dan sembunyikan kontak jika sedang aktif */
+            
             .order.chat-active .chat-sidebar {
                 display: none !important;
             }
@@ -84,7 +84,6 @@
 
                     @foreach($users as $user)
                         @php
-                            // Cek apakah user punya avatar. Jika tidak, gunakan UI Avatars otomatis.
                             $avatarUrl = (isset($user->avatar) && $user->avatar != '') 
                                 ? asset('storage/' . $user->avatar) 
                                 : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=FDF2F2&color=8B1A1A&bold=true';
@@ -159,7 +158,6 @@
         const emojiPickerContainer = document.getElementById('emoji-picker-container');
         const picker = document.querySelector('emoji-picker');
 
-        // Fungsi Format Waktu
         function formatTime(dateString) {
             const date = dateString ? new Date(dateString) : new Date();
             let hours = date.getHours();
@@ -169,7 +167,6 @@
             return hours + ':' + minutes;
         }
 
-        // Reset Notifikasi/Badge saat kontak diklik
         function resetBadge(idStr) {
             const badge = document.getElementById('badge-' + idStr);
             if(badge) {
@@ -178,17 +175,14 @@
             }
         }
 
-        // Tambah Notifikasi/Badge dengan Logika Baru yang Lebih Kuat
         function incrementBadge(idStr) {
-            console.log("🔔 Memicu notifikasi untuk ID:", idStr); // Pengecekan di Console
+            console.log("🔔 Memicu notifikasi untuk ID:", idStr); 
             
             const badge = document.getElementById('badge-' + idStr);
             if(badge) {
-                // Pastikan yang diambil murni angka
                 let count = parseInt(badge.innerText.trim()) || 0;
                 badge.innerText = count + 1;
                 
-                // Pakai flex agar ukurannya bulat sempurna dan dipaksa tampil
                 badge.style.display = 'flex'; 
                 badge.style.alignItems = 'center';
                 badge.style.justifyContent = 'center';
@@ -206,7 +200,6 @@
             currentChatType = 'group';
             resetBadge('group');
 
-            // Handle Active UI
             document.querySelectorAll('.chat-list-item').forEach(el => el.classList.remove('chat-contact-active'));
             event.currentTarget.classList.add('chat-contact-active');
 
@@ -220,17 +213,14 @@
             prepareChatRoom();
         }
 
-        // Tambahkan parameter avatarUrl di sini
         function selectContact(id, name, avatarUrl) {
             currentReceiverId = id;
             currentChatType = 'personal';
             resetBadge(id);
 
-            // Handle Active UI
             document.querySelectorAll('.chat-list-item').forEach(el => el.classList.remove('chat-contact-active'));
             event.currentTarget.classList.add('chat-contact-active');
 
-            // Ganti kotak warna biru menjadi tag <img>
             chatHeader.innerHTML = `
                 <button class="mobile-back-btn" onclick="backToSidebar()"><i class='bx bx-arrow-back'></i></button>
                 <img src="${avatarUrl}" alt="Profil" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
@@ -247,7 +237,6 @@
             emojiButton.disabled = false;
             chatMessages.innerHTML = '<div style="text-align: center; color: var(--dark-grey); margin-top: 20px;">Memuat riwayat pesan...</div>';
             
-            // Aktifkan tampilan Chat di Mobile
             document.querySelector('.table-data .order').classList.add('chat-active');
             
             const urlId = currentReceiverId === null ? 'group' : currentReceiverId;
@@ -271,7 +260,6 @@
             setTimeout(() => messageInput.focus(), 100);
         }
 
-        // Fungsi navigasi 'Kembali' untuk mobile
         function backToSidebar() {
             document.querySelector('.table-data .order').classList.remove('chat-active');
             currentReceiverId = null;
@@ -361,14 +349,11 @@
                 console.error("Gagal mengirim pesan", err);
             });
         }
-        /// Buka/Tutup menu Emoji
         emojiButton.addEventListener('click', (e) => {
-            e.preventDefault();  // Mencegah *refresh* atau efek bawaan tombol
-            e.stopPropagation(); // Mencegah klik bocor ke area lain
+            e.preventDefault();  
+            e.stopPropagation(); 
             
-            // Logika buka-tutup yang lebih solid
             if (emojiPickerContainer.style.display === 'none' || emojiPickerContainer.style.display === '') {
-                // Sesuaikan tema emoji picker dengan tema body
                 if (document.body.classList.contains('dark')) {
                     picker.classList.remove('light');
                     picker.classList.add('dark');
@@ -382,7 +367,6 @@
             }
         });
 
-        // Masukkan Emoji ke dalam input teks
         picker.addEventListener('emoji-click', event => {
             const cursorPosition = messageInput.selectionStart;
             const textBefore = messageInput.value.substring(0, cursorPosition);
@@ -392,9 +376,7 @@
             messageInput.focus();
         });
 
-        // Tutup menu Emoji jika user mengklik area lain
         document.addEventListener('click', (event) => {
-            // HANYA jalankan pengecekan jika popup sedang terbuka
             if (emojiPickerContainer.style.display === 'block') {
                 if (!emojiButton.contains(event.target) && !emojiPickerContainer.contains(event.target)) {
                     emojiPickerContainer.style.display = 'none';
@@ -409,12 +391,10 @@
                     
                     window.Echo.private(`chat.${currentUserId}`)
                         .listen('MessageSent', (e) => {
-                            // PENGUBAHAN PENTING: Gunakan '==' agar aman dari perbedaan tipe data (String vs Integer)
                             if (currentChatType === 'personal' && currentReceiverId == e.message.sender_id) {
                                 renderMessage(e.message.message, 'received', e.message.created_at);
                                 scrollToBottom();
                             } else {
-                                // Jika tab tidak sedang terbuka di kontak tersebut
                                 incrementBadge(e.message.sender_id);
                             }
                         })

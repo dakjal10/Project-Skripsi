@@ -3,9 +3,9 @@
 @section('title', 'Buat Laporan - E-Pengaduan')
 
 @section('konten_utama')
-{{-- Tambahan Style Khusus untuk merapikan ukuran PicMo --}}
+
     <style>
-        /* 1. Kembalikan ukuran Picmo ke normal agar isinya LEGA dan UTUH 100% */
+        
         .picmo__picker {
             --picker-width: 320px !important;
             --picker-height: 350px !important;
@@ -13,20 +13,20 @@
             width: 100% !important;
         }
 
-        /* 2. Susutkan/Zoom-out keseluruhan container secara proporsional! */
+        
         #picker-container {
             width: auto !important;
             height: auto !important;
-            transform: scale(0.6); /* Susutkan menjadi 60% dari ukuran asli */
-            transform-origin: bottom right; /* Titik pusat menyusutnya di pojok kanan bawah dekat tombol */
+            transform: scale(0.6); 
+            transform-origin: bottom right; 
         }
 
-        /* Pastikan struktur Search dan Tab Kategori aman */
+        
         .picmo__picker header, .picmo__picker nav {
             display: flex !important;
         }
 
-        /* Pastikan tombol emoji rapi dan presisi */
+        
         .picmo__emojiButton {
             background-color: transparent !important;
             box-shadow: none !important;
@@ -67,7 +67,7 @@
                 <h3>Formulir Pengaduan Mahasiswa</h3>
             </div>
             
-            {{-- Pesan Sukses --}}
+            
             @if (session('success'))
                 <div style="background-color: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #c3e6cb; display: flex; align-items: center; gap: 10px; font-family: var(--poppins);">
                     <i class='bx bxs-check-circle' style="font-size: 24px;"></i>
@@ -75,7 +75,7 @@
                 </div>
             @endif
 
-            {{-- Pesan Error Validasi --}}
+            
             @if ($errors->any())
                 <div style="background-color: #ffe6e6; color: red; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
                     <strong>Oops! Ada yang salah:</strong>

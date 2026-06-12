@@ -237,7 +237,7 @@ class AdminController extends Controller
     public function bersihkanDataLama()
     {
         // 1. Tentukan batas waktu: 6 bulan yang lalu dari hari ini
-        $batasWaktu = Carbon::now()->subMonths(6);
+        $batasWaktu = Carbon::now()->subMinutes(5);
 
         // 2. Ambil data laporan yang statusnya 'selesai' dan tanggal update-nya lebih lama dari 6 bulan lalu
         $laporanLama = Pengaduan::where('status', 'selesai')

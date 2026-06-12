@@ -1,11 +1,9 @@
 <x-app-layout>
     <script>
-        // Cek status tema saat pertama kali halaman dimuat
         if (localStorage.getItem('theme') === 'dark') {
             document.documentElement.classList.add('dark');
         }
         
-        // Dengarkan perubahan pada localStorage jika user mengubah tema di tab lain (Live Sync)
         window.addEventListener('storage', function(e) {
             if (e.key === 'theme') {
                 if (e.newValue === 'dark') {
@@ -38,7 +36,7 @@
             color: var(--text-main);
         }
 
-        /* CARD STYLE - SOLID IN LIGHT, SOLID IN DARK (MATCHING DASHBOARD) */
+        
         .custom-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -54,7 +52,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        /* TEXT CONTRAST */
+        
         .text-label {
             color: #64748b;
             font-size: 0.75rem;
@@ -70,12 +68,12 @@
         }
         .dark .text-value { color: #FBFBFB; }
 
-        /* OVERRIDES */
+        
         .dark .bg-gray-100 { background-color: var(--bg-light) !important; }
         .dark .text-gray-900, .dark .text-gray-800, .dark .text-gray-700 { color: #FBFBFB !important; }
         .dark .text-gray-600, .dark .text-gray-500, .dark .text-gray-400 { color: #AAAAAA !important; }
 
-        /* Sembunyikan layout utama, TAPI kecualikan elemen di dalam Picmo */
+        
         nav:not(#picker-container nav), 
         header:not(#picker-container header), 
         .navbar, .topbar, #sidebar {
@@ -86,8 +84,8 @@
             padding-top: 1rem !important;
         }
 
-        /* --- FIX TAMPILAN PICMO EMOJI PICKER --- */
-        /* 1. Kembalikan ukuran Picmo ke normal agar isinya LEGA dan UTUH 100% */
+        
+        
         #picker-container .picmo__picker {
             --picker-width: 320px !important;
             --picker-height: 350px !important;
@@ -95,7 +93,7 @@
             width: 100% !important;
         }
 
-        /* 2. Susutkan keseluruhan container secara proporsional */
+        
         #picker-container {
             position: absolute;
             right: 0;
@@ -105,13 +103,13 @@
             transform-origin: bottom right;
         }
 
-        /* Pastikan struktur Search dan Tab Kategori aman */
+        
         #picker-container .picmo__picker header,
         #picker-container .picmo__picker nav {
             display: flex !important;
         }
 
-        /* Pastikan tombol emoji rapi */
+        
         #picker-container .picmo__emojiButton {
             background-color: transparent !important;
             box-shadow: none !important;
@@ -131,13 +129,13 @@
             background-color: #f3f4f6 !important;
         }
 
-        /* Tema Gelap untuk Picmo */
+        
         .dark #picker-container .picmo__picker {
             --background-color: #0f172a;
             --text-color: #f1f5f9;
             --border-color: rgba(255, 255, 255, 0.1);
         }
-        /* -------------------------------------- */
+        
     </style>
 
     <div class="py-4 sm:px-6 lg:px-8">
@@ -345,7 +343,6 @@
                     displayMessages: { search: 'Cari emoji...' }
                 });
 
-                // Tampilkan/Sembunyikan panel emoji
                 trigger.addEventListener('click', (e) => {
                     e.stopPropagation();
                     e.preventDefault();
@@ -358,7 +355,6 @@
                     }
                 });
 
-                // Sisipkan emoji ke textarea
                 picker.addEventListener('emoji:select', event => {
                     const emoji = event.emoji;
                     const start = textarea.selectionStart;
@@ -370,7 +366,6 @@
                     trigger.classList.remove('text-red-600', 'border-red-300', 'bg-red-50');
                 });
 
-                // Tutup jika klik di luar
                 document.addEventListener('click', (e) => {
                     if (!container.contains(e.target) && e.target !== trigger && !trigger.contains(e.target)) {
                         container.style.display = 'none';

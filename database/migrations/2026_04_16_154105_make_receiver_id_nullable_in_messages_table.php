@@ -11,13 +11,6 @@ class MakeReceiverIdNullableInMessagesTable extends Migration
      */
     public function up(): void
     {
-        if (Schema::getConnection()->getDriverName() === 'sqlite') {
-            Schema::table('messages', function (Blueprint $table) {
-                $table->bigInteger('receiver_id')->unsigned()->nullable()->change();
-            });
-            return;
-        }
-
         Schema::table('messages', function (Blueprint $table) {
             // 1. Hapus kunci tamunya dulu (wajib pakai nama aslinya)
             $table->dropForeign('messages_receiver_id_foreign');
@@ -35,13 +28,6 @@ class MakeReceiverIdNullableInMessagesTable extends Migration
      */
     public function down(): void
     {
-        if (Schema::getConnection()->getDriverName() === 'sqlite') {
-            Schema::table('messages', function (Blueprint $table) {
-                $table->bigInteger('receiver_id')->unsigned()->nullable(false)->change();
-            });
-            return;
-        }
-
         Schema::table('messages', function (Blueprint $table) {
             // --- Logika Down (Balikin ke kondisi awal) ---
             // 1. Hapus kunci tamunya dulu

@@ -8,7 +8,7 @@
     
     <title>@yield('title', 'E-Pengaduan')</title>
     <style>
-        /* CSS Tambahan untuk mempercantik scrollbar (ulir) di notifikasi */
+        
         .notif-scroll::-webkit-scrollbar {
             width: 6px;
         }
@@ -25,10 +25,10 @@
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
-    {{-- Stack untuk style tambahan dari halaman child --}}
+    
     @stack('styles')
     
-    {{-- Script Pencegah Kilatan Putih (Dark Mode) --}}
+    
     <script>
         if (localStorage.getItem('theme') === 'dark') {
             document.documentElement.classList.add('dark');
@@ -116,7 +116,7 @@
                     <div style="max-height: 250px; overflow-y: auto;">
                         @forelse(Auth::user()->unreadNotifications as $notification)
                             
-                            {{-- Pengecekan otomatis agar link Admin dan Mahasiswa tidak tertukar --}}
+                            
                             @php
                                 $notifRoute = '';
                                 if(Auth::user()->userRole && Auth::user()->userRole->role_name === 'admin') {
